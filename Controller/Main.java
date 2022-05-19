@@ -28,7 +28,15 @@ import View.MainWindow;
 
 public class Main{
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        Constants.paths.add("resources\\car1.png"); //Size: 840 x 1150
+        Constants.paths.add("resources\\car2.png");
+        Constants.paths.add("resources\\car3.png");
+        Constants.paths.add("resources\\background.png");
+
+        // Constants.SW = ImageIO.read(new File(Constants.paths.get(3))).getWidth();
+        // Constants.SH = ImageIO.read(new File(Constants.paths.get(3))).getHeight();
+
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(Constants.SW,Constants.SH);
@@ -39,16 +47,13 @@ public class Main{
 
         frame.setVisible(true);
 
-        Constants.paths.add("resources\\car1.png"); //Size: 840 x 1150
-        Constants.paths.add("resources\\car2.png");
-        Constants.paths.add("resources\\car3.png");
+
 
 
 
         new Car(new File(Constants.paths.get(0)));
         new Car(new File(Constants.paths.get(1)));
         new Car(new File(Constants.paths.get(2)));
-
-
+        //thing to do - set size of window to size of background img so never stretched
     }
 }

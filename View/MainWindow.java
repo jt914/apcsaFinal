@@ -47,6 +47,7 @@ public class MainWindow extends JPanel implements ActionListener{
         for (Car c : Constants.cars)
             try {
                 c.draw(g2d);
+                g.drawImage(ImageIO.read(new File(Constants.paths.get(3))), 0, 0, null);
             } catch (IOException e) {
                 e.printStackTrace();
             }

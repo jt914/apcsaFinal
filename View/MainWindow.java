@@ -25,29 +25,50 @@ import Model.*;
 
 
 public class MainWindow extends JPanel implements ActionListener{
+
+    //affine transform is weird stuff im not using this rn
+    private AffineTransform trans;										
+
     
     public MainWindow(){
+
+        //sets size of window
         setSize(new Dimension (Constants.SW, Constants.SH));
-        new Timer(50, this).start();
+
+        //basically this timer will trigger the action performed method every 10 milliseconds
+        new Timer(10, this).start();
     }
 
     public void actionPerformed(ActionEvent e) {
+
+        //moves each car up 1
         for (Car c : Constants.cars){
-        c.translateAdd(10, 0);
+        c.translateAdd(0, -1);
         }
-        
+        //pretty sure this just calls the paint component thingy
         repaint();
 
         
     }
 
+    
     public void paintComponent(Graphics g) {
+
+        //these next two lines you just need for some reason idrk why
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+        try {
+
+        //because reading an image might result in failure, you need to surround it in a try catch. You can read up how draw image works, but its pretty simple
+            g.drawImage(ImageIO.read(new File(Constants.paths.get(3))), 0, 0, Constants.SW, Constants.SH, null);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
+        //this just redraws i dont really think i need this but it works rn so...
         for (Car c : Constants.cars)
             try {
                 c.draw(g2d);
-                g.drawImage(ImageIO.read(new File(Constants.paths.get(3))), 0, 0, null);
             } catch (IOException e) {
                 e.printStackTrace();
             }

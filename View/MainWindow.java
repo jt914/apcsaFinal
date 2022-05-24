@@ -28,7 +28,7 @@ public class MainWindow extends JPanel implements ActionListener{
 
     //affine transform is weird stuff im not using this rn
     private AffineTransform trans;										
-
+    private int rotate = 0;
     
     public MainWindow(){
 
@@ -42,13 +42,74 @@ public class MainWindow extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
 
         //moves each car up 1
-        for (Car c : Constants.cars){
-        c.translateAdd(0, -1);
+        for (Car c : Constants.NorthCars){
+            updateCars();
+        // c.translateAdd(0, -3);
+    
+        // if((((double)c.getY())/Constants.SH < 0.55 && (rotate <= 90))){
+        //     rotateCar(c);
+        //     repaint();
+            
+        // }
         }
+
+        for (Car c : Constants.EastCars){
+            updateCars();
+        }
+        for (Car c : Constants.SouthCars){
+            updateCars();
+        }
+
+        for (Car c : Constants.WestCars){
+            updateCars();
+        }
+
         //pretty sure this just calls the paint component thingy
         repaint();
 
         
+    }
+
+    public void updateCars() {
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void rotateCar(Car c){
+        c.rotateImageByDegrees(rotate);
+        rotate ++;
+
     }
 
     
@@ -66,12 +127,12 @@ public class MainWindow extends JPanel implements ActionListener{
         }
 
         //this just redraws i dont really think i need this but it works rn so...
-        for (Car c : Constants.cars)
-            try {
-                c.draw(g2d);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        // for (Car c : Constants.cars)
+        //     try {
+        //         c.draw(g2d);
+        //     } catch (IOException e) {
+        //         e.printStackTrace();
+        //     }
     }
 
 

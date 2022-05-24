@@ -22,9 +22,18 @@ public class Constants {
 
 
     //1st list to store cars on the screen, should probably revise for 1 list for each direction, like a list for each car going north east south west
-    public static List <Car> cars = new ArrayList<Car>();
+    public static List <Car> NorthCars = new ArrayList<Car>();
+    public static List <Car> EastCars = new ArrayList<Car>();
+    public static List <Car> SouthCars = new ArrayList<Car>();
+    public static List <Car> WestCars = new ArrayList<Car>();
+
     //stores all the names of the images to call later to draw onto the screen
     public static List<String> paths = new ArrayList<String>();
+
+    private int NORTH = 1;
+    private int EAST = 2;
+    private int SOUTH = 3;
+    private int WEST = 4;
 
 
 

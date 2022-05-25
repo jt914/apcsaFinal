@@ -65,7 +65,7 @@ public class Main{
 
 
         //construcotr for new car will create the car and draw it using the paint method and stuff, the file parameter is just to tell it the image to draw
-        new Car(new File(Constants.paths.get(0)));
+        new Car(ImageIO.read(new File(Constants.paths.get(0))));
         // new Car(new File(Constants.paths.get(1)));
         // new Car(new File(Constants.paths.get(2)));
         //thing to do - set size of window to size of background img so never stretched

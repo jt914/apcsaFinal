@@ -23,79 +23,99 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import Controller.*;
 
-public class Car extends JPanel{
+public class Car extends JPanel {
 
-    //buffered image is basically an image that has stored data
-    private BufferedImage master;
-    private BufferedImage rotated;
-    private int direction;
+    // buffered image is basically an image that has stored data
+    private BufferedImage master, rotated;
+    private int direction, x, y;
 
+    // stores the car's location, starts out at the start location
 
-    //stores the car's location, starts out at the start location
-    int x = Constants.carStartX;
-    int y = Constants.carStartY;
-    public Car(Image o){
-        master = (BufferedImage)o;
+    public Car(Image o) {
+        master = (BufferedImage) o;
         rotated = master;
-        
-        //adds current car to list of cars
 
-        int dOfTravel = (int)(Math.random() * 4) + 1;
+        // adds current car to list of cars
 
-        switch(dOfTravel){
-            case(1):{
+        int dOfTravel = (int) (Math.random() * 4) + 1;
+        direction = dOfTravel;
+
+        switch (dOfTravel) {
+            case (1): {
                 Constants.NorthCars.add(this);
+                x = Constants.carStartXNorth;
+                y = Constants.carStartYNorth;
+
             }
-            case(2):{
+            case (2): {
                 Constants.EastCars.add(this);
+                x = Constants.carStartXEast;
+                y = Constants.carStartYEast;
+                master = rotateImageByDegrees(master, 45);
+
             }
-            case(3):{
+            case (3): {
                 Constants.SouthCars.add(this);
-            }
-            case(4):{
-            Constants.WestCars.add(this);
-            }
-            }
+                x = Constants.carStartXSouth;
+                y = Constants.carStartYSouth;
 
-    
+            }
+            case (4): {
+                Constants.WestCars.add(this);
+                x = Constants.carStartXWest;
+                y = Constants.carStartYWest;
+
+            }
+        }
+
     }
 
+    public int getDirection() {
+        return direction;
+    }
 
-    //simple getter methods
-    public int getX(){return x;}
-    public int getY(){return y;}
-    //simple setter methods
-    public void translateTo(int x, int y){
+    // simple getter methods
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    // simple setter methods
+    public void translateTo(int x, int y) {
         this.x = x;
-        this.y= y;
+        this.y = y;
     }
 
-    public void translateAdd(int x, int y){
+    public void translateAdd(int x, int y) {
         this.x += x;
         this.y += y;
     }
 
-    public void changeDirecton(int direction){
+    public void changeDirecton(int direction) {
         this.direction = direction;
     }
 
-        //draw method is called automatically somewhere in the jframe logic stuff
-    public void draw(Graphics g) throws IOException{
-        Graphics2D g2d = (Graphics2D)g;
-        int x = (getWidth() - rotated.getWidth()) / 2;
-        int y = (getHeight() - rotated.getHeight()) / 2;
+    // draw method is called automatically somewhere in the jframe logic stuff
+    public void draw(Graphics g) throws IOException {
+        Graphics2D g2d = (Graphics2D) g;
+        // int x = (getWidth() - rotated.getWidth()) / 2;
+        // int y = (getHeight() - rotated.getHeight()) / 2;
 
-        //CHANGE WIDTH AND HEIGHT OF CAR PICTURE ACCORDINGLY
-        //Figure out how to rotate car
+        // CHANGE WIDTH AND HEIGHT OF CAR PICTURE ACCORDINGLY
+        // Figure out how to rotate car
 
-        //draws image, imageio read is basically like reading the image, x y are top left coords. Observer is some weird stuff, most people just use null unless youre doing complex stuf
-        g2d.drawImage(rotated, this.x + x, this. y + y, null);
+        // draws image, imageio read is basically like reading the image, x y are top
+        // left coords. Observer is some weird stuff, most people just use null unless
+        // youre doing complex stuf
+        g2d.drawImage(rotated, x, y, 109, 150, null);
 
     }
 
-    //THIS IS IN PROGRESS. 
+    // THIS IS IN PROGRESS.
 
-    
     @Override
     public Dimension getPreferredSize() {
         return master == null
@@ -103,32 +123,34 @@ public class Car extends JPanel{
                 : new Dimension(master.getWidth(), master.getHeight());
     }
 
-    public void rotateImageByDegrees(double angle) {
+    public BufferedImage rotateImageByDegrees(BufferedImage img, double angle) {
+
         double rads = Math.toRadians(angle);
         double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
-        int w = master.getWidth();
-        int h = master.getHeight();
+        int w = img.getWidth();
+        int h = img.getHeight();
         int newWidth = (int) Math.floor(w * cos + h * sin);
         int newHeight = (int) Math.floor(h * cos + w * sin);
-    
+
         BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = rotated.createGraphics();
         AffineTransform at = new AffineTransform();
         at.translate((newWidth - w) / 2, (newHeight - h) / 2);
-    
+
         int x = w / 2;
         int y = h / 2;
-    
+
         at.rotate(rads, x, y);
         g2d.setTransform(at);
-        g2d.drawImage(master, 0, 0, null);
-        Color c=new Color(0f,0f,0f,0f );
-
-        g2d.setColor(c);
-        g2d.drawRect(0, 0, newWidth - 1, newHeight - 1);
+        g2d.drawImage(img, 0, 0, null);
         g2d.dispose();
-    
-        this.rotated = rotated;
+
+        return rotated;
+    }
+
+    public void rotateImageByDegrees(double angle) {
+        rotated = rotateImageByDegrees(rotated, angle);
+
     }
 
 }

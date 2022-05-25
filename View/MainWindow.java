@@ -1,4 +1,5 @@
 package View;
+
 import java.io.File;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,120 +24,118 @@ import javax.swing.*;
 import Controller.*;
 import Model.*;
 
+public class MainWindow extends JPanel implements ActionListener {
 
-public class MainWindow extends JPanel implements ActionListener{
-
-    //affine transform is weird stuff im not using this rn
-    private AffineTransform trans;										
+    // affine transform is weird stuff im not using this rn
+    private AffineTransform trans;
     private int rotate = 0;
-    
-    public MainWindow(){
 
-        //sets size of window
-        setSize(new Dimension (Constants.SW, Constants.SH));
+    public MainWindow() {
 
-        //basically this timer will trigger the action performed method every 10 milliseconds
+        // sets size of window
+        setSize(new Dimension(Constants.SW, Constants.SH));
+
+        // basically this timer will trigger the action performed method every 10
+        // milliseconds
         new Timer(10, this).start();
     }
 
     public void actionPerformed(ActionEvent e) {
 
-        //moves each car up 1
-        for (Car c : Constants.NorthCars){
-            updateCars();
+        // moves each car up 1
         // c.translateAdd(0, -3);
-    
+
         // if((((double)c.getY())/Constants.SH < 0.55 && (rotate <= 90))){
-        //     rotateCar(c);
-        //     repaint();
-            
+        // rotateCar(c);
+        // repaint();
+
         // }
-        }
+        updateCars(Constants.NorthCars);
+        updateCars(Constants.EastCars);
+        updateCars(Constants.SouthCars);
+        updateCars(Constants.WestCars);
 
-        for (Car c : Constants.EastCars){
-            updateCars();
-        }
-        for (Car c : Constants.SouthCars){
-            updateCars();
-        }
-
-        for (Car c : Constants.WestCars){
-            updateCars();
-        }
-
-        //pretty sure this just calls the paint component thingy
+        // pretty sure this just calls the paint component thingy
         repaint();
 
-        
     }
 
-    public void updateCars() {
+    // 1 = North
+    // 2 = East
+    // 3 = South
+    // 4 = West
+    public void updateCars(ArrayList<Car> cars) {
+        for (Car c : cars) {
+            switch (c.getDirection()) {
+                case (1): {
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+                    c.translateAdd(c.getX(), c.getY() + 1);
+                }
+                case (2): {
+
+                    c.translateAdd(c.getX(), c.getY() + 1);
+                }
+                case (3): {
+
+                    c.translateAdd(c.getX(), c.getY() + 1);
+                }
+                case (4): {
+
+                    c.translateAdd(c.getX(), c.getY() + 1);
+                }
+            }
+        }
+
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public void rotateCar(Car c){
+    public void rotateCar(Car c) {
         c.rotateImageByDegrees(rotate);
-        rotate ++;
+        rotate++;
 
     }
 
-    
     public void paintComponent(Graphics g) {
 
-        //these next two lines you just need for some reason idrk why
+        // these next two lines you just need for some reason idrk why
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         try {
 
-        //because reading an image might result in failure, you need to surround it in a try catch. You can read up how draw image works, but its pretty simple
-            g.drawImage(ImageIO.read(new File(Constants.paths.get(3))), 0, 0, Constants.SW, Constants.SH, null);
+            // because reading an image might result in failure, you need to surround it in
+            // a try catch. You can read up how draw image works, but its pretty simple
+            g2d.drawImage(ImageIO.read(new File(Constants.paths.get(3))), 0, 0, Constants.SW, Constants.SH, null);
         } catch (IOException e1) {
             e1.printStackTrace();
         }
 
-        //this just redraws i dont really think i need this but it works rn so...
-        // for (Car c : Constants.cars)
-        //     try {
-        //         c.draw(g2d);
-        //     } catch (IOException e) {
-        //         e.printStackTrace();
-        //     }
+        // draws all the cars
+        for (Car c : Constants.NorthCars)
+            try {
+                c.draw(g2d);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        for (Car c : Constants.EastCars)
+            try {
+                c.draw(g2d);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        for (Car c : Constants.WestCars)
+            try {
+                c.draw(g2d);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        for (Car c : Constants.SouthCars)
+            try {
+                c.draw(g2d);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
     }
 
-
-
-
-    
 }

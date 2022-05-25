@@ -39,6 +39,7 @@ public class Car extends JPanel {
 
         int dOfTravel = (int) (Math.random() * 4) + 1;
         direction = dOfTravel;
+        System.out.println(direction);
 
         switch (dOfTravel) {
             case (1): {
@@ -110,7 +111,7 @@ public class Car extends JPanel {
         // draws image, imageio read is basically like reading the image, x y are top
         // left coords. Observer is some weird stuff, most people just use null unless
         // youre doing complex stuf
-        g2d.drawImage(rotated, x, y, 109, 150, null);
+        g2d.drawImage(master, x, y, 109, 150, null);
 
     }
 

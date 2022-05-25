@@ -50,10 +50,10 @@ public class MainWindow extends JPanel implements ActionListener {
         // repaint();
 
         // }
-        updateCars(Constants.NorthCars);
-        updateCars(Constants.EastCars);
-        updateCars(Constants.SouthCars);
-        updateCars(Constants.WestCars);
+        // updateCars(Constants.NorthCars);
+        // updateCars(Constants.EastCars);
+        // updateCars(Constants.SouthCars);
+        // updateCars(Constants.WestCars);
 
         // pretty sure this just calls the paint component thingy
         repaint();

@@ -37,7 +37,7 @@ public class MainWindow extends JPanel implements ActionListener {
 
         // basically this timer will trigger the action performed method every 10
         // milliseconds
-        new Timer(100, this).start();
+        new Timer(5, this).start();
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -63,31 +63,50 @@ public class MainWindow extends JPanel implements ActionListener {
     // 1 = North
     // 2 = East
     // 3 = South
+
+    //testing
     // 4 = West
     public void updateCars(ArrayList<Car> cars) {
         for (Car c : cars) {
             switch (c.getDirection()) {
                 case (1): {
                     c.translateAdd(0, 1);
+                    if (c.getY() > Constants.SH / 2) {
+                        Constants.NorthCars.remove(c);
+                        Constants.NorthCarsDone.add(c);
+                    }
                     break;
                 }
                 case (2): {
                     c.translateAdd(-1, 0);
+                    if (c.getX() > Constants.SW / 2) {
+                        Constants.EastCars.remove(c);
+                        Constants.EastCarsDone.add(c);
+                    }
                     break;
 
                 }
                 case (3): {
                     c.translateAdd(0, -1);
+                    if (c.getY() < Constants.SH / 2) {
+                        Constants.SouthCars.remove(c);
+                        Constants.SouthCarsDone.add(c);
+                    }
                     break;
                 }
                 case (4): {
 
                     c.translateAdd(1, 0);
+                    if (c.getX() < Constants.SW / 2) {
+                        Constants.WestCars.remove(c);
+                        Constants.WestCarsDone.add(c);
+                    }
                     break;
 
                 }
 
             }
+
         }
 
     }

@@ -36,6 +36,11 @@ public class Constants {
     public static ArrayList <Car> SouthCars = new ArrayList<Car>();
     public static ArrayList <Car> WestCars = new ArrayList<Car>();
 
+    public static ArrayList <Car> NorthCarsDone = new ArrayList<Car>();
+    public static ArrayList <Car> EastCarsDone = new ArrayList<Car>();
+    public static ArrayList <Car> SouthCarsDone = new ArrayList<Car>();
+    public static ArrayList <Car> WestCarsDone = new ArrayList<Car>();
+
     //stores all the names of the images to call later to draw onto the screen
     public static List<String> paths = new ArrayList<String>();
 

@@ -39,31 +39,56 @@ public class Car extends JPanel {
 
         int dOfTravel = (int) (Math.random() * 4) + 1;
         direction = dOfTravel;
+        System.out.println(direction);
 
         switch (dOfTravel) {
             case (1): {
                 Constants.NorthCars.add(this);
                 x = Constants.carStartXNorth;
                 y = Constants.carStartYNorth;
+                try {
+                    master = ImageIO.read(new File("resources\\car1Rotated180.png"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
 
             }
             case (2): {
+
                 Constants.EastCars.add(this);
                 x = Constants.carStartXEast;
                 y = Constants.carStartYEast;
-                master = rotateImageByDegrees(master, 45);
+                try {
+                    master = ImageIO.read(new File("resources\\car1Rotated270.png"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
 
             }
             case (3): {
                 Constants.SouthCars.add(this);
                 x = Constants.carStartXSouth;
                 y = Constants.carStartYSouth;
+                try {
+                    master = ImageIO.read(new File("resources\\car1.png"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
 
             }
             case (4): {
                 Constants.WestCars.add(this);
                 x = Constants.carStartXWest;
                 y = Constants.carStartYWest;
+                try {
+                    master = ImageIO.read(new File("resources\\car1Rotated90.png"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
 
             }
         }
@@ -101,6 +126,8 @@ public class Car extends JPanel {
     // draw method is called automatically somewhere in the jframe logic stuff
     public void draw(Graphics g) throws IOException {
         Graphics2D g2d = (Graphics2D) g;
+
+        //NEED THIS, USE THIS.X + X FOR ROTATION
         // int x = (getWidth() - rotated.getWidth()) / 2;
         // int y = (getHeight() - rotated.getHeight()) / 2;
 
@@ -110,7 +137,28 @@ public class Car extends JPanel {
         // draws image, imageio read is basically like reading the image, x y are top
         // left coords. Observer is some weird stuff, most people just use null unless
         // youre doing complex stuf
-        g2d.drawImage(rotated, x, y, 109, 150, null);
+        switch (direction) {
+            case (1): {
+                g2d.drawImage(master, x, y, 109, 150, null);
+                break;
+            }
+            case (2): {
+
+                g2d.drawImage(master, x, y, 150, 109, null);
+                break;
+
+            }
+            case (3): {
+                g2d.drawImage(master, x, y, 109, 150, null);
+                break;
+
+            }
+            case (4): {
+                g2d.drawImage(master, x, y, 150, 109, null);
+                break;
+
+            }
+        }
 
     }
 
@@ -132,8 +180,8 @@ public class Car extends JPanel {
         int newWidth = (int) Math.floor(w * cos + h * sin);
         int newHeight = (int) Math.floor(h * cos + w * sin);
 
-        BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = rotated.createGraphics();
+        BufferedImage rotate = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = rotate.createGraphics();
         AffineTransform at = new AffineTransform();
         at.translate((newWidth - w) / 2, (newHeight - h) / 2);
 
@@ -145,11 +193,11 @@ public class Car extends JPanel {
         g2d.drawImage(img, 0, 0, null);
         g2d.dispose();
 
-        return rotated;
+        return rotate;
     }
 
     public void rotateImageByDegrees(double angle) {
-        rotated = rotateImageByDegrees(rotated, angle);
+        rotated = rotateImageByDegrees(master, angle);
 
     }
 

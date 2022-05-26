@@ -37,7 +37,7 @@ public class MainWindow extends JPanel implements ActionListener {
 
         // basically this timer will trigger the action performed method every 10
         // milliseconds
-        new Timer(10, this).start();
+        new Timer(100, this).start();
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -68,31 +68,35 @@ public class MainWindow extends JPanel implements ActionListener {
         for (Car c : cars) {
             switch (c.getDirection()) {
                 case (1): {
-
-                    c.translateAdd(c.getX(), c.getY() + 1);
+                    c.translateAdd(0, 1);
+                    break;
                 }
                 case (2): {
+                    c.translateAdd(-1, 0);
+                    break;
 
-                    c.translateAdd(c.getX(), c.getY() + 1);
                 }
                 case (3): {
-
-                    c.translateAdd(c.getX(), c.getY() + 1);
+                    c.translateAdd(0, -1);
+                    break;
                 }
                 case (4): {
 
-                    c.translateAdd(c.getX(), c.getY() + 1);
+                    c.translateAdd(1, 0);
+                    break;
+
                 }
+
             }
         }
 
     }
 
-    public void rotateCar(Car c) {
-        c.rotateImageByDegrees(rotate);
-        rotate++;
+    // public void rotateCar(Car c) {
+    // c.rotateImageByDegrees(rotate);
+    // rotate++;
 
-    }
+    // }
 
     public void paintComponent(Graphics g) {
 
@@ -109,32 +113,36 @@ public class MainWindow extends JPanel implements ActionListener {
         }
 
         // draws all the cars
-        for (Car c : Constants.NorthCars)
+        for (Car c : Constants.NorthCars) {
             try {
                 c.draw(g2d);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
 
-        for (Car c : Constants.EastCars)
+        for (Car c : Constants.EastCars) {
             try {
                 c.draw(g2d);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        for (Car c : Constants.WestCars)
+        }
+        for (Car c : Constants.WestCars) {
             try {
                 c.draw(g2d);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
 
-        for (Car c : Constants.SouthCars)
+        for (Car c : Constants.SouthCars) {
             try {
                 c.draw(g2d);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
 
     }
 

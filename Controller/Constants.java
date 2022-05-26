@@ -18,16 +18,16 @@ public class Constants {
     public final static int SH = (int)(Toolkit.getDefaultToolkit().getScreenSize().getHeight()*0.9);
     //these variables are basically what percent of the screen size is the right starting position for the car, because if you do it by pixels its gonna become weird on different computers
     public static int carStartXNorth = (int)(SW * 0.5318991097922849);
-    public static int carStartYNorth = 100;
+    public static int carStartYNorth = 50;
 
-    public static int carStartXEast = 100;
+    public static int carStartXEast = SW - 50;
     public static int carStartYEast = (int)(SH * 0.5318991097922849) ;
 
-    public static int carStartXSouth = SW-100;
-    public static int carStartYSouth = (int)(SH * 0.5318991097922849);
+    public static int carStartXSouth = (int)(SW * 0.5318991097922849);
+    public static int carStartYSouth = SH-50;
 
-    public static int carStartXWest = (int)(SW * 0.5318991097922849);
-    public static int carStartYWest = SH-100;
+    public static int carStartXWest = 50;
+    public static int carStartYWest = (int)(SH * 0.5318991097922849);
 
 
     //1st list to store cars on the screen, should probably revise for 1 list for each direction, like a list for each car going north east south west

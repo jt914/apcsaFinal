@@ -72,7 +72,7 @@ public class MainWindow extends JPanel implements ActionListener {
                 case (1): {
                     c.translateAdd(0, 1);
                     if (c.getY() > Constants.SH / 2) {
-                        Constants.NorthCars.remove(c);
+                        // Constants.NorthCars.remove(c);
                         Constants.NorthCarsDone.add(c);
                     }
                     break;
@@ -80,7 +80,7 @@ public class MainWindow extends JPanel implements ActionListener {
                 case (2): {
                     c.translateAdd(-1, 0);
                     if (c.getX() > Constants.SW / 2) {
-                        Constants.EastCars.remove(c);
+                        // Constants.EastCars.remove(c);
                         Constants.EastCarsDone.add(c);
                     }
                     break;
@@ -89,7 +89,7 @@ public class MainWindow extends JPanel implements ActionListener {
                 case (3): {
                     c.translateAdd(0, -1);
                     if (c.getY() < Constants.SH / 2) {
-                        Constants.SouthCars.remove(c);
+                        // Constants.SouthCars.remove(c);
                         Constants.SouthCarsDone.add(c);
                     }
                     break;
@@ -98,7 +98,7 @@ public class MainWindow extends JPanel implements ActionListener {
 
                     c.translateAdd(1, 0);
                     if (c.getX() < Constants.SW / 2) {
-                        Constants.WestCars.remove(c);
+                        // Constants.WestCars.remove(c);
                         Constants.WestCarsDone.add(c);
                     }
                     break;

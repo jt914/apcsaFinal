@@ -28,6 +28,7 @@ public class Car extends JPanel {
     // buffered image is basically an image that has stored data
     private BufferedImage master, rotated;
     private int direction, x, y;
+    private boolean moving;
 
     // stores the car's location, starts out at the start location
 
@@ -40,6 +41,9 @@ public class Car extends JPanel {
         int dOfTravel = (int) (Math.random() * 4) + 1;
         direction = dOfTravel;
         System.out.println(direction);
+        moving = true;
+
+        
 
         switch (dOfTravel) {
             case (1): {
@@ -94,7 +98,17 @@ public class Car extends JPanel {
         }
 
     }
+    public void startMoving(){
+        moving = true;
+    }
+    public void stopMoving(){
+        moving = false;
+    }
 
+
+    public boolean isMoving(){
+        return moving;
+    }
     public int getDirection() {
         return direction;
     }

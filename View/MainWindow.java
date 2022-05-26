@@ -29,6 +29,16 @@ public class MainWindow extends JPanel implements ActionListener {
     // affine transform is weird stuff im not using this rn
     private AffineTransform trans;
     private int rotate = 0;
+    private long tempTimeNorth;
+    private long tempTimeEast;
+    private long tempTimeSouth;
+    private long tempTimeWest;
+
+    //this is so that the temptime doesnt keep resetting everytime it checks at the stop sign
+    private boolean executedNorth = false;
+    private boolean executedEast = false;
+    private boolean executedSouth = false;
+    private boolean executedWest = false;
 
     public MainWindow() {
 
@@ -54,6 +64,11 @@ public class MainWindow extends JPanel implements ActionListener {
         updateCars(Constants.EastCars);
         updateCars(Constants.SouthCars);
         updateCars(Constants.WestCars);
+        updateCars(Constants.NorthCarsDone);
+        updateCars(Constants.EastCarsDone);
+        updateCars(Constants.SouthCarsDone);
+        updateCars(Constants.WestCarsDone);
+
 
         // pretty sure this just calls the paint component thingy
         repaint();
@@ -64,44 +79,99 @@ public class MainWindow extends JPanel implements ActionListener {
     // 2 = East
     // 3 = South
 
-    //testing
+    // testing
     // 4 = West
     public void updateCars(ArrayList<Car> cars) {
+        Car frontCar = cars.get(0);
+        tempTime = 
+        switch(frontCar.getDirection()){
+            case(1):{
+                if(frontCar.getY() > Constants.SH*0.49){
+                    if(!executedNorth){
+                        executedNorth = !executedNorth;
+                        tempTimeNorth = System.currentTimeMillis();
+                    }
+                    if(System.currentTimeMillis() > )
+
+                    //check if all other first cars are in a stop sign or the elapsed time is enough and then continue
+
+                    cars.get(0).stopMoving();
+                    //if the current time exceeds however long ago the start time was ago, reset the current time and continue
+                    //continue stops the current car and moves it up to the done grid then set moving to true
+
+                    for()
+                    //check if the distance to the ahead car is (placeholder) distance, and if it less then stop moving. If it is greater, set moving to true
+                }
+                break;
+            }
+            case(2):{
+                if(frontCar.getX() < Constants.SW/2){
+                    //WRITE CODE ON STOP SIGN AND REMOVING FROM LISTS HERE
+                }
+                break;
+            }
+
+            case(3):{
+                if(frontCar.getY() < Constants.SH/2){
+                    //WRITE CODE ON STOP SIGN AND REMOVING FROM LISTS HERE
+                }
+                break;
+            }
+
+            case(4):{
+                if(frontCar.getX() > Constants.SW/2){
+                    //WRITE CODE ON STOP SIGN AND REMOVING FROM LISTS HERE
+                }
+                break;
+            }
+
+        }
+
+
         for (Car c : cars) {
+
             switch (c.getDirection()) {
                 case (1): {
-                    c.translateAdd(0, 1);
-                    if (c.getY() > Constants.SH / 2) {
-                        // Constants.NorthCars.remove(c);
-                        Constants.NorthCarsDone.add(c);
+                    if (c.isMoving()) {
+                        c.translateAdd(0, 1);
+                        if (c.getY() > Constants.SH / 2) {
+                            // Constants.NorthCars.remove(c);
+                            Constants.NorthCarsDone.add(c);
+                        }
+
                     }
                     break;
                 }
                 case (2): {
-                    c.translateAdd(-1, 0);
-                    if (c.getX() > Constants.SW / 2) {
-                        // Constants.EastCars.remove(c);
-                        Constants.EastCarsDone.add(c);
+                    if (c.isMoving()) {
+                        c.translateAdd(-1, 0);
+                        if (c.getX() > Constants.SW / 2) {
+                            // Constants.EastCars.remove(c);
+                            Constants.EastCarsDone.add(c);
+                        }
                     }
                     break;
 
                 }
                 case (3): {
-                    c.translateAdd(0, -1);
-                    if (c.getY() < Constants.SH / 2) {
-                        // Constants.SouthCars.remove(c);
-                        Constants.SouthCarsDone.add(c);
+                    if (c.isMoving()) {
+                        c.translateAdd(0, -1);
+                        if (c.getY() < Constants.SH / 2) {
+                            // Constants.SouthCars.remove(c);
+                            Constants.SouthCarsDone.add(c);
+                        }
                     }
                     break;
                 }
                 case (4): {
-
-                    c.translateAdd(1, 0);
-                    if (c.getX() < Constants.SW / 2) {
-                        // Constants.WestCars.remove(c);
-                        Constants.WestCarsDone.add(c);
+                    if (c.isMoving()) {
+                        c.translateAdd(1, 0);
+                        if (c.getX() < Constants.SW / 2) {
+                            // Constants.WestCars.remove(c);
+                            Constants.WestCarsDone.add(c);
+                        }
+                        break;
                     }
-                    break;
 
                 }
 

@@ -1,4 +1,5 @@
 package Controller;
+
 import java.io.File;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -23,15 +24,12 @@ import javax.swing.*;
 import Model.*;
 import View.MainWindow;
 
-
-
-
-public class Main{
+public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        //basically all the images to draw on the screen
-        Constants.paths.add("resources\\car1.png"); //Size: 840 x 1150
+        // basically all the images to draw on the screen
+        Constants.paths.add("resources\\car1.png"); // Size: 840 x 1150
         Constants.paths.add("resources\\car2.png");
         Constants.paths.add("resources\\car3.png");
         Constants.paths.add("resources\\background.png");
@@ -39,38 +37,49 @@ public class Main{
         // Constants.SW = ImageIO.read(new File(Constants.paths.get(3))).getWidth();
         // Constants.SH = ImageIO.read(new File(Constants.paths.get(3))).getHeight();
 
-
-        //Creates new frame, or window
+        // Creates new frame, or window
         JFrame frame = new JFrame();
 
-        //once you hit the little x button its gonna stop the code
+        // once you hit the little x button its gonna stop the code
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //sets the screen size to the specified lengths in constants
-        frame.setSize(Constants.SW,Constants.SH);
+        // sets the screen size to the specified lengths in constants
+        frame.setSize(Constants.SW, Constants.SH);
 
-
-        //main window is basically a panel, or part of the frame
+        // main window is basically a panel, or part of the frame
         MainWindow main = new MainWindow();
 
-        //setting the locaiton and adding it onto the frame
-        main.setLocation(100,100);
+        // setting the locaiton and adding it onto the frame
+        main.setLocation(100, 100);
         frame.add(main);
 
-        //makes it visible
+        // makes it visible
         frame.setVisible(true);
 
+        long startTimeInMillis = System.currentTimeMillis();
 
+        int counter = 0;
 
+        while (true) {
+            long currentTimeMillis = System.currentTimeMillis();
+            if (currentTimeMillis - startTimeInMillis >= 5000) {
+                startTimeInMillis = currentTimeMillis;
+                new Car(ImageIO.read(new File(Constants.paths.get(0))));
+                ++counter;
+                if (counter >= 20) {
+                    break;
+                }
+            }
+        }
 
-
-        //construcotr for new car will create the car and draw it using the paint method and stuff, the file parameter is just to tell it the image to draw
-        new Car(ImageIO.read(new File(Constants.paths.get(0))));
+        // construcotr for new car will create the car and draw it using the paint
+        // method and stuff, the file parameter is just to tell it the image to draw
+        // new Car(ImageIO.read(new File(Constants.paths.get(0))));
         // new Car(ImageIO.read(new File(Constants.paths.get(0))));
         // new Car(ImageIO.read(new File(Constants.paths.get(0))));
 
         // new Car(new File(Constants.paths.get(1)));
         // new Car(new File(Constants.paths.get(2)));
-        //thing to do - set size of window to size of background img so never stretched
+        // thing to do - set size of window to size of background img so never stretched
     }
 }

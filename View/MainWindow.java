@@ -16,6 +16,7 @@ import java.io.File;
 import java.awt.image.BufferedImage;
 
 import java.io.IOException;
+import java.net.NoRouteToHostException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -63,15 +64,7 @@ public class MainWindow extends JPanel implements ActionListener {
         // repaint();
 
         // }
-        updateCars(Constants.NorthCars);
-        updateCars(Constants.EastCars);
-        updateCars(Constants.SouthCars);
-        updateCars(Constants.WestCars);
-        updateCarsDone(Constants.NorthCarsDone);
-        updateCarsDone(Constants.EastCarsDone);
-        updateCarsDone(Constants.SouthCarsDone);
-        updateCarsDone(Constants.WestCarsDone);
-
+        updateCars();
         // pretty sure this just calls the paint component thingy
         repaint();
 
@@ -86,30 +79,31 @@ public class MainWindow extends JPanel implements ActionListener {
 
     public void updateCarsDone(ArrayList<Car> cars) {
         for (int i = 0; i < cars.size(); i++) {
+            if (cars.get(i).isFinished()) {
+                switch (cars.get(i).getDirection()) {
+                    case (1): {
+                        cars.get(i).translateAdd(0, 1);
 
-            switch (cars.get(i).getDirection()) {
-                case (1): {
-                    cars.get(i).translateAdd(0, 1);
+                        break;
+                    }
+                    case (2): {
+                        cars.get(i).translateAdd(-1, 0);
 
-                    break;
+                        break;
+
+                    }
+                    case (3): {
+                        cars.get(i).translateAdd(0, -1);
+
+                        break;
+                    }
+
+                    case (4): {
+                        cars.get(i).translateAdd(1, 0);
+                        break;
+                    }
+
                 }
-                case (2): {
-                    cars.get(i).translateAdd(-1, 0);
-
-                    break;
-
-                }
-                case (3): {
-                    cars.get(i).translateAdd(0, -1);
-
-                    break;
-                }
-
-                case (4): {
-                    cars.get(i).translateAdd(1, 0);
-                    break;
-                }
-
             }
 
         }
@@ -117,16 +111,62 @@ public class MainWindow extends JPanel implements ActionListener {
     }
 
     public void updateOccupied() {
-        boolean retVal = false;
         for (Car c : Constants.NorthCars) {
             if (c.getX() > Constants.topLeftIntersectionX && c.getX() < Constants.botRightIntersectionX
                     && c.getY() > Constants.topLeftIntersectionY && c.getY() < Constants.botRightIntersectionY) {
+                isOccupied = true;
+                return;
+            }
+        }
+        for (Car c : Constants.EastCars) {
+            if (c.getX() > Constants.topLeftIntersectionX && c.getX() < Constants.botRightIntersectionX
+                    && c.getY() > Constants.topLeftIntersectionY && c.getY() < Constants.botRightIntersectionY) {
+                isOccupied = true;
+                return;
+            }
+        }
+        for (Car c : Constants.SouthCars) {
+            if (c.getX() > Constants.topLeftIntersectionX && c.getX() < Constants.botRightIntersectionX
+                    && c.getY() > Constants.topLeftIntersectionY && c.getY() < Constants.botRightIntersectionY) {
+                isOccupied = true;
+                return;
+            }
+        }
+        for (Car c : Constants.WestCars) {
+            if (c.getX() > Constants.topLeftIntersectionX && c.getX() < Constants.botRightIntersectionX
+                    && c.getY() > Constants.topLeftIntersectionY && c.getY() < Constants.botRightIntersectionY) {
+                isOccupied = true;
+                return;
+            }
+        }
+    }
 
+    public void cleanCars() {
+        for (int i = 0; i < Constants.NorthCars.size(); i++) {
+            if (Constants.NorthCars.get(i).getY() >= Constants.SH) {
+                Constants.NorthCars.remove(i);
+            }
+        }
+        for (int i = 0; i < Constants.EastCars.size(); i++) {
+            if (Constants.EastCars.get(i).getY() <= 0) {
+                Constants.EastCars.remove(i);
+            }
+        }
+        for (int i = 0; i < Constants.SouthCars.size(); i++) {
+            if (Constants.SouthCars.get(i).getY() <= 0) {
+                Constants.SouthCars.remove(i);
+            }
+        }
+        for (int i = 0; i < Constants.NorthCars.size(); i++) {
+            if (Constants.WestCars.get(i).getX() >= Constants.SW) {
+                Constants.WestCars.remove(i);
             }
         }
     }
 
     public void updateCars(ArrayList<Car> cars) {
+        cleanCars();
+        updateOccupied();
 
     }
 

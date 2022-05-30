@@ -30,6 +30,7 @@ public class Car extends JPanel {
     private int direction, x, y;
     private boolean moving;
     private long stopTime;
+    private boolean finishedAction;
 
     // stores the car's location, starts out at the start location
 
@@ -98,6 +99,14 @@ public class Car extends JPanel {
             }
         }
 
+    }
+
+    public void finishAction() {
+        finishedAction = true;
+    }
+
+    public boolean isFinished() {
+        return finishedAction;
     }
 
     public void startMoving() {

@@ -293,4 +293,14 @@ public class Car extends JPanel {
 
     }
 
+    public void doAction() {
+        /**
+         * 
+         * action case int. Switch for which case, either turning left right or straight
+         * In method called do action
+         * Passes in stage of action (what y variable they are at and then apply the
+         * corresponding transformation)
+         */
+    }
+
 }

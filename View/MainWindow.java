@@ -216,13 +216,30 @@ public class MainWindow extends JPanel implements ActionListener {
                             if (Constants.NorthCars.get(i).getY() >= (Constants.topLeftIntersectionY
                                     - Constants.NorthCars.get(i).imageHeight())) {
                                 Constants.NorthCars.get(i).stopMoving();
+                                Constants.NorthCars.get(i).updateStopTime();
 
                             }
                         } else {
                             if (Constants.NorthCars.get(i - 1).getY() - Constants.NorthCars.get(i).getY() < 10
                                     + Constants.NorthCars.get(i).imageHeight()) {
-                                System.out.println("workig also");
                                 Constants.NorthCars.get(i).stopMoving();
+
+                            }
+                        }
+                    } else {
+                        if (isFirstCarUnfinished(Constants.NorthCars.get(i), Constants.NorthCars)) {
+                            System.out.println(Constants.NorthCars.get(i).getStopTime());
+                            if (Constants.NorthCars.get(i).getStopTime() < 100) {
+                                Constants.NorthCars.get(i).updateStopTime();
+                            } else {
+                                System.out.println("workig also");
+                                Constants.NorthCars.get(i).doAction();
+                                Constants.NorthCars.get(i).startMoving();
+                            }
+                        } else {
+                            if (Constants.NorthCars.get(i - 1).getY() - Constants.NorthCars.get(i).getY() > 10
+                                    + Constants.NorthCars.get(i).imageHeight()) {
+                                Constants.NorthCars.get(i).startMoving();
 
                             }
                         }
@@ -232,10 +249,6 @@ public class MainWindow extends JPanel implements ActionListener {
             }
         }
         moveCars();
-
-    }
-
-    public void executeAction(int option, Car c) {
 
     }
 

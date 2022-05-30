@@ -117,7 +117,7 @@ public class MainWindow extends JPanel implements ActionListener {
                 Constants.SouthCars.remove(i);
             }
         }
-        for (int i = 0; i < Constants.NorthCars.size(); i++) {
+        for (int i = 0; i < Constants.WestCars.size(); i++) {
             if (Constants.WestCars.get(i).getX() >= Constants.SW) {
                 Constants.WestCars.remove(i);
             }
@@ -192,15 +192,70 @@ public class MainWindow extends JPanel implements ActionListener {
 
     }
 
+    public boolean isFirstCarUnfinished(Car c, ArrayList<Car> cars) {
+        Car firstCar = cars.get(0);
+        for (int i = 0; i < cars.size(); i++) {
+            if (!cars.get(i).isFinished()) {
+                firstCar = cars.get(i);
+                break;
+            }
+        }
+        return c.getId() == firstCar.getId();
+    }
+
     public void updateCars() {
         cleanCars();
         updateOccupied();
-        if (isOccupied) {
+        if (!isOccupied) {
             for (int i = 0; i < Constants.NorthCars.size(); i++) {
+
+                if (!Constants.NorthCars.get(i).isFinished()) {
+                    if (Constants.NorthCars.get(i).isMoving()) {
+
+                        if (isFirstCarUnfinished(Constants.NorthCars.get(i), Constants.NorthCars)) {
+                            if (Constants.NorthCars.get(i).getY() >= (Constants.topLeftIntersectionY
+                                    - Constants.NorthCars.get(i).imageHeight())) {
+                                Constants.NorthCars.get(i).stopMoving();
+
+                            }
+                        } else {
+                            if (Constants.NorthCars.get(i - 1).getY() - Constants.NorthCars.get(i).getY() < 10
+                                    + Constants.NorthCars.get(i).imageHeight()) {
+                                System.out.println("workig also");
+                                Constants.NorthCars.get(i).stopMoving();
+
+                            }
+                        }
+                    }
+                }
 
             }
         }
+        moveCars();
 
+    }
+
+    public void executeAction(int option, Car c) {
+
+    }
+
+    public void moveCars() {
+        for (Car c : Constants.NorthCars) {
+            if (c.isMoving())
+                c.translateAdd(0, 1);
+        }
+        for (Car c : Constants.EastCars) {
+            if (c.isMoving())
+                c.translateAdd(-1, 0);
+        }
+        for (Car c : Constants.SouthCars) {
+            if (c.isMoving())
+                c.translateAdd(0, -1);
+        }
+        for (Car c : Constants.WestCars) {
+            if (c.isMoving())
+                c.translateAdd(1, 0);
+        }
     }
 
     public void paintComponent(Graphics g) {

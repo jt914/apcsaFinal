@@ -31,12 +31,16 @@ public class Car extends JPanel {
     private boolean moving;
     private int stopTime;
     private boolean finishedAction;
+    public static int currentId;
+    private int id;
 
     // stores the car's location, starts out at the start location
 
     public Car(Image o) {
         master = (BufferedImage) o;
         rotated = master;
+        id = currentId;
+        currentId++;
 
         // adds current car to list of cars
 
@@ -99,6 +103,56 @@ public class Car extends JPanel {
             }
         }
 
+    }
+
+    public int imageWidth() {
+        switch (direction) {
+            case (1): {
+                return (int) (Constants.SW * 0.0808605341246291);
+            }
+            case (2): {
+                return (int) (Constants.SH * 0.1893939393939394);
+
+            }
+            case (3): {
+                return (int) (Constants.SW * 0.0808605341246291);
+
+            }
+            case (4): {
+                return (int) (Constants.SH * 0.1893939393939394);
+            }
+            default:
+                return 0;
+        }
+    }
+
+    public int imageHeight() {
+        switch (direction) {
+            case (1): {
+                return (int) (Constants.SH * 0.1893939393939394);
+
+            }
+            case (2): {
+
+                return (int) (Constants.SW * 0.0808605341246291);
+
+            }
+            case (3): {
+                return (int) (Constants.SH * 0.1893939393939394);
+
+            }
+            case (4): {
+                return (int) (Constants.SW * 0.0808605341246291);
+
+            }
+            default:
+                return 0;
+
+        }
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void finishAction() {
@@ -173,22 +227,26 @@ public class Car extends JPanel {
         // youre doing complex stuf
         switch (direction) {
             case (1): {
-                g2d.drawImage(master, x, y, 109, 150, null);
+                g2d.drawImage(master, x, y, (int) (Constants.SW * 0.0808605341246291),
+                        (int) (Constants.SH * 0.1893939393939394), null);
                 break;
             }
             case (2): {
 
-                g2d.drawImage(master, x, y, 150, 109, null);
+                g2d.drawImage(master, x, y, (int) (Constants.SH * 0.1893939393939394),
+                        (int) (Constants.SW * 0.0808605341246291), null);
                 break;
 
             }
             case (3): {
-                g2d.drawImage(master, x, y, 109, 150, null);
+                g2d.drawImage(master, x, y, (int) (Constants.SW * 0.0808605341246291),
+                        (int) (Constants.SH * 0.1893939393939394), null);
                 break;
 
             }
             case (4): {
-                g2d.drawImage(master, x, y, 150, 109, null);
+                g2d.drawImage(master, x, y, (int) (Constants.SH * 0.1893939393939394),
+                        (int) (Constants.SW * 0.0808605341246291), null);
                 break;
 
             }

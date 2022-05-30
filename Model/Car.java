@@ -117,8 +117,8 @@ public class Car extends JPanel {
         moving = false;
     }
 
-    public void setStopTime() {
-        stopTime = System.currentTimeMillis();
+    public void updateStopTime() {
+        stopTime += 1;
     }
 
     public long getStopTime() {

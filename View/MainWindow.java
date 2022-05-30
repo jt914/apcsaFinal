@@ -164,9 +164,46 @@ public class MainWindow extends JPanel implements ActionListener {
         }
     }
 
-    public void updateCars(ArrayList<Car> cars) {
+    public void updateTimer() {
+        for (int i = 0; i < Constants.NorthCars.size(); i++) {
+            if (!Constants.NorthCars.get(i).isMoving() && !Constants.NorthCars.get(i).isFinished()) {
+                Constants.NorthCars.get(i).updateStopTime();
+                break;
+            }
+        }
+        for (int i = 0; i < Constants.EastCars.size(); i++) {
+            if (!Constants.EastCars.get(i).isMoving() && !Constants.EastCars.get(i).isFinished()) {
+                Constants.EastCars.get(i).updateStopTime();
+                break;
+            }
+        }
+        for (int i = 0; i < Constants.SouthCars.size(); i++) {
+            if (!Constants.SouthCars.get(i).isMoving() && !Constants.SouthCars.get(i).isFinished()) {
+                Constants.SouthCars.get(i).updateStopTime();
+                break;
+            }
+        }
+        for (int i = 0; i < Constants.WestCars.size(); i++) {
+            if (!Constants.WestCars.get(i).isMoving() && !Constants.WestCars.get(i).isFinished()) {
+                Constants.WestCars.get(i).updateStopTime();
+                break;
+            }
+        }
+    }
+
+    public int rightOfWay() {
+        int northTime, eastTime, southTime, westTime;
+
+    }
+
+    public void updateCars() {
         cleanCars();
         updateOccupied();
+        if (isOccupied) {
+            for (int i = 0; i < Constants.NorthCars.size(); i++) {
+
+            }
+        }
 
     }
 
@@ -408,38 +445,38 @@ public class MainWindow extends JPanel implements ActionListener {
             }
         }
 
-        for (Car c : Constants.NorthCarsDone) {
+        // for (Car c : Constants.NorthCarsDone) {
 
-            try {
-                c.draw(g2d);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        // try {
+        // c.draw(g2d);
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
+        // }
 
-        for (Car c : Constants.EastCarsDone) {
-            try {
-                c.draw(g2d);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        // for (Car c : Constants.EastCarsDone) {
+        // try {
+        // c.draw(g2d);
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
+        // }
 
-        for (Car c : Constants.WestCarsDone) {
-            try {
-                c.draw(g2d);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        // for (Car c : Constants.WestCarsDone) {
+        // try {
+        // c.draw(g2d);
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
+        // }
 
-        for (Car c : Constants.SouthCarsDone) {
-            try {
-                c.draw(g2d);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        // for (Car c : Constants.SouthCarsDone) {
+        // try {
+        // c.draw(g2d);
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
+        // }
 
     }
 

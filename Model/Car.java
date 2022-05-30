@@ -29,6 +29,7 @@ public class Car extends JPanel {
     private BufferedImage master, rotated;
     private int direction, x, y;
     private boolean moving;
+    private long stopTime;
 
     // stores the car's location, starts out at the start location
 
@@ -38,12 +39,12 @@ public class Car extends JPanel {
 
         // adds current car to list of cars
 
-        int dOfTravel = (int) (Math.random() * 4) + 1;
-        direction = dOfTravel;
+        // int dOfTravel = (int) (Math.random() * 4) + 1;
+        // direction = dOfTravel;
+        int dOfTravel = 1;
+        direction = 1;
         System.out.println(direction);
         moving = true;
-
-        
 
         switch (dOfTravel) {
             case (1): {
@@ -98,17 +99,27 @@ public class Car extends JPanel {
         }
 
     }
-    public void startMoving(){
+
+    public void startMoving() {
         moving = true;
     }
-    public void stopMoving(){
+
+    public void stopMoving() {
         moving = false;
     }
 
+    public void setStopTime() {
+        stopTime = System.currentTimeMillis();
+    }
 
-    public boolean isMoving(){
+    public long getStopTime() {
+        return stopTime;
+    }
+
+    public boolean isMoving() {
         return moving;
     }
+
     public int getDirection() {
         return direction;
     }
@@ -141,7 +152,7 @@ public class Car extends JPanel {
     public void draw(Graphics g) throws IOException {
         Graphics2D g2d = (Graphics2D) g;
 
-        //NEED THIS, USE THIS.X + X FOR ROTATION
+        // NEED THIS, USE THIS.X + X FOR ROTATION
         // int x = (getWidth() - rotated.getWidth()) / 2;
         // int y = (getHeight() - rotated.getHeight()) / 2;
 

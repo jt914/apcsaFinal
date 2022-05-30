@@ -152,7 +152,10 @@ public class MainWindow extends JPanel implements ActionListener {
     }
 
     public int rightOfWay() {
-        int northTime, eastTime, southTime, westTime;
+        int northTime = 0;
+        int eastTime = 0;
+        int southTime = 0;
+        int westTime = 0;
         for (int i = 0; i < Constants.NorthCars.size(); i++) {
             if (!Constants.NorthCars.get(i).isMoving() && !Constants.NorthCars.get(i).isFinished()) {
                 northTime = Constants.NorthCars.get(i).getStopTime();
@@ -176,6 +179,15 @@ public class MainWindow extends JPanel implements ActionListener {
                 westTime = Constants.WestCars.get(i).getStopTime();
                 break;
             }
+        }
+        if (northTime > eastTime && northTime > southTime && northTime > westTime) {
+            return 1;
+        } else if (eastTime > northTime && eastTime > southTime && eastTime > westTime) {
+            return 2;
+        } else if (southTime > northTime && southTime > eastTime && southTime > westTime) {
+            return 2;
+        } else {
+            return 4;
         }
 
     }

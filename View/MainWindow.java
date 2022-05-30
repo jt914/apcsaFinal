@@ -56,13 +56,6 @@ public class MainWindow extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
 
-        // moves each car up 1
-        // cars.get(i).translateAdd(0, -3);
-
-        // if((((double)cars.get(i).getY())/Constants.SH < 0.55 && (rotate <= 90))){
-        // rotateCar(cars.get(i));
-        // repaint();
-
         // }
         updateCars();
         // pretty sure this just calls the paint component thingy
@@ -76,39 +69,6 @@ public class MainWindow extends JPanel implements ActionListener {
 
     // testing
     // 4 = West
-
-    public void updateCarsDone(ArrayList<Car> cars) {
-        for (int i = 0; i < cars.size(); i++) {
-            if (cars.get(i).isFinished()) {
-                switch (cars.get(i).getDirection()) {
-                    case (1): {
-                        cars.get(i).translateAdd(0, 1);
-
-                        break;
-                    }
-                    case (2): {
-                        cars.get(i).translateAdd(-1, 0);
-
-                        break;
-
-                    }
-                    case (3): {
-                        cars.get(i).translateAdd(0, -1);
-
-                        break;
-                    }
-
-                    case (4): {
-                        cars.get(i).translateAdd(1, 0);
-                        break;
-                    }
-
-                }
-            }
-
-        }
-
-    }
 
     public void updateOccupied() {
         for (Car c : Constants.NorthCars) {
@@ -193,6 +153,30 @@ public class MainWindow extends JPanel implements ActionListener {
 
     public int rightOfWay() {
         int northTime, eastTime, southTime, westTime;
+        for (int i = 0; i < Constants.NorthCars.size(); i++) {
+            if (!Constants.NorthCars.get(i).isMoving() && !Constants.NorthCars.get(i).isFinished()) {
+                northTime = Constants.NorthCars.get(i).getStopTime();
+                break;
+            }
+        }
+        for (int i = 0; i < Constants.EastCars.size(); i++) {
+            if (!Constants.EastCars.get(i).isMoving() && !Constants.EastCars.get(i).isFinished()) {
+                eastTime = Constants.EastCars.get(i).getStopTime();
+                break;
+            }
+        }
+        for (int i = 0; i < Constants.SouthCars.size(); i++) {
+            if (!Constants.SouthCars.get(i).isMoving() && !Constants.SouthCars.get(i).isFinished()) {
+                southTime = Constants.SouthCars.get(i).getStopTime();
+                break;
+            }
+        }
+        for (int i = 0; i < Constants.WestCars.size(); i++) {
+            if (!Constants.WestCars.get(i).isMoving() && !Constants.WestCars.get(i).isFinished()) {
+                westTime = Constants.WestCars.get(i).getStopTime();
+                break;
+            }
+        }
 
     }
 
@@ -207,198 +191,6 @@ public class MainWindow extends JPanel implements ActionListener {
 
     }
 
-    // public void updateCars(ArrayList<Car> cars) {
-    // if (cars.size() != 0) {
-    // Car frontCar = cars.get(0);
-    // System.out.println(frontCar.getY());
-    // System.out.println(Constants.SH * 0.15);
-
-    // switch (frontCar.getDirection()) {
-    // case (1): {
-    // if (frontCar.getY() > (Constants.SH * 0.4)) {
-    // System.out.println("working");
-
-    // if (!executedNorth) {
-    // executedNorth = true;
-    // tempTimeNorth = System.currentTimeMillis();
-    // System.out.println(tempTimeNorth + "north");
-
-    // }
-    // // if(System.currentTimeMillis() > )
-
-    // // check if all other first cars are in a stop sign or the elapsed time is
-    // // enough and then continue
-
-    // cars.get(0).stopMoving();
-    // // if the current time exceeds however long ago the start time was ago, reset
-    // // the current time and continue
-    // // continue stops the current car and moves it up to the done grid then set
-    // // moving to true
-
-    // // check if the distance to the ahead car is (placeholder) distance, and if
-    // it
-    // // less then stop moving. If it is greater, set moving to true
-    // }
-    // break;
-    // }
-    // case (2): {
-    // if (frontCar.getX() < Constants.SW * 0.7) {
-    // if (!executedEast) {
-    // executedEast = true;
-    // tempTimeEast = System.currentTimeMillis();
-    // System.out.println(tempTimeWest + "east");
-
-    // }
-    // // if(System.currentTimeMillis() > )
-
-    // // check if all other first cars are in a stop sign or the elapsed time is
-    // // enough and then continue
-
-    // cars.get(0).stopMoving();
-    // // if the current time exceeds however long ago the start time was ago, reset
-    // // the current time and continue
-    // // continue stops the current car and moves it up to the done grid then set
-    // // moving to true
-
-    // // check if the distance to the ahead car is (placeholder) distance, and if
-    // it
-    // // less then stop moving. If it is greater, set moving to true
-    // }
-    // break;
-    // }
-
-    // case (3): {
-    // if (frontCar.getY() < Constants.SH * 0.7) {
-    // if (!executedSouth) {
-    // executedSouth = true;
-    // tempTimeSouth = System.currentTimeMillis();
-    // System.out.println(tempTimeWest + "south");
-
-    // }
-    // // if(System.currentTimeMillis() > )
-
-    // // check if all other first cars are in a stop sign or the elapsed time is
-    // // enough and then continue
-
-    // cars.get(0).stopMoving();
-    // // if the current time exceeds however long ago the start time was ago, reset
-    // // the current time and continue
-    // // continue stops the current car and moves it up to the done grid then set
-    // // moving to true
-
-    // // check if the distance to the ahead car is (placeholder) distance, and if
-    // it
-    // // less then stop moving. If it is greater, set moving to true
-    // }
-    // break;
-    // }
-
-    // case (4): {
-    // if (frontCar.getX() > Constants.SW * 0.35) {
-    // if (!executedWest) {
-    // executedWest = true;
-    // tempTimeWest = System.currentTimeMillis();
-    // System.out.println(tempTimeWest + "west");
-
-    // }
-    // // if(System.currentTimeMillis() > )
-
-    // // check if all other first cars are in a stop sign or the elapsed time is
-    // // enough and then continue
-
-    // cars.get(0).stopMoving();
-    // // if the current time exceeds however long ago the start time was ago, reset
-    // // the current time and continue
-    // // continue stops the current car and moves it up to the done grid then set
-    // // moving to true
-
-    // // check if the distance to the ahead car is (placeholder) distance, and if
-    // it
-    // // less then stop moving. If it is greater, set moving to true
-    // }
-
-    // break;
-    // }
-
-    // }
-
-    // for (int i = 0; i < cars.size(); i++) {
-
-    // switch (cars.get(i).getDirection()) {
-    // case (1): {
-    // if (cars.get(i).isMoving()) {
-    // cars.get(i).translateAdd(0, 1);
-
-    // // if else if here to determine if they are behind another car
-
-    // }
-    // if (System.currentTimeMillis() > (tempTimeNorth + 1000)) {
-    // System.out.println(System.currentTimeMillis() + " north");
-
-    // Constants.NorthCarsDone.add(cars.get(i));
-    // Constants.NorthCars.remove(cars.get(i));
-
-    // }
-    // break;
-
-    // }
-    // case (2): {
-    // if (cars.get(i).isMoving()) {
-    // cars.get(i).translateAdd(-1, 0);
-    // if (System.currentTimeMillis() > tempTimeEast + 1000) {
-    // System.out.println(System.currentTimeMillis() + " east");
-
-    // Constants.EastCarsDone.add(cars.get(i));
-    // Constants.EastCars.remove(cars.get(i));
-    // }
-    // }
-    // break;
-
-    // }
-    // case (3): {
-    // if (cars.get(i).isMoving()) {
-    // cars.get(i).translateAdd(0, -1);
-    // if (cars.get(i).getY() < Constants.SH * 0.7
-    // && System.currentTimeMillis() > tempTimeSouth + 1000) {
-    // System.out.println(System.currentTimeMillis() + " south");
-
-    // Constants.SouthCarsDone.add(cars.get(i));
-    // Constants.SouthCars.remove(cars.get(i));
-
-    // }
-    // }
-    // break;
-    // }
-    // case (4): {
-    // if (cars.get(i).isMoving()) {
-    // cars.get(i).translateAdd(1, 0);
-    // if (cars.get(i).getX() > Constants.SW * 0.35
-    // && System.currentTimeMillis() > tempTimeWest + 1000) {
-    // System.out.println(System.currentTimeMillis() + " west");
-
-    // Constants.WestCarsDone.add(cars.get(i));
-    // Constants.WestCars.remove(cars.get(i));
-
-    // }
-    // break;
-    // }
-
-    // }
-
-    // }
-
-    // }
-
-    // }
-
-    // }
-
-    // public void rotateCar(Car cars.get(i)) {
-    // cars.get(i).rotateImageByDegrees(rotate);
-    // rotate++;
-
-    // }
-    // remove cars out of boundary/screeen
     public void paintComponent(Graphics g) {
 
         // these next two lines you just need for some reason idrk why
@@ -444,39 +236,6 @@ public class MainWindow extends JPanel implements ActionListener {
                 e.printStackTrace();
             }
         }
-
-        // for (Car c : Constants.NorthCarsDone) {
-
-        // try {
-        // c.draw(g2d);
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
-        // }
-
-        // for (Car c : Constants.EastCarsDone) {
-        // try {
-        // c.draw(g2d);
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
-        // }
-
-        // for (Car c : Constants.WestCarsDone) {
-        // try {
-        // c.draw(g2d);
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
-        // }
-
-        // for (Car c : Constants.SouthCarsDone) {
-        // try {
-        // c.draw(g2d);
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
-        // }
 
     }
 

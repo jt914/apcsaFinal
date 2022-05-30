@@ -29,7 +29,7 @@ public class Car extends JPanel {
     private BufferedImage master, rotated;
     private int direction, x, y;
     private boolean moving;
-    private long stopTime;
+    private int stopTime;
     private boolean finishedAction;
 
     // stores the car's location, starts out at the start location
@@ -121,7 +121,7 @@ public class Car extends JPanel {
         stopTime += 1;
     }
 
-    public long getStopTime() {
+    public int getStopTime() {
         return stopTime;
     }
 

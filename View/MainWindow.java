@@ -73,10 +73,13 @@ public class MainWindow extends JPanel implements ActionListener {
     public void updateOccupied() {
         for (Car c : Constants.NorthCars) {
             if (c.getX() > Constants.topLeftIntersectionX && c.getX() < Constants.botRightIntersectionX
-                    && c.getY() > Constants.topLeftIntersectionY && c.getY() < Constants.botRightIntersectionY) {
+                    && c.getY() > Constants.topLeftIntersectionY - c.imageHeight() + 2
+                    && c.getY() < Constants.botRightIntersectionY - c.imageHeight() + 2) {
                 isOccupied = true;
                 return;
             }
+            isOccupied = false;
+
         }
         for (Car c : Constants.EastCars) {
             if (c.getX() > Constants.topLeftIntersectionX && c.getX() < Constants.botRightIntersectionX
@@ -84,6 +87,8 @@ public class MainWindow extends JPanel implements ActionListener {
                 isOccupied = true;
                 return;
             }
+            isOccupied = false;
+
         }
         for (Car c : Constants.SouthCars) {
             if (c.getX() > Constants.topLeftIntersectionX && c.getX() < Constants.botRightIntersectionX
@@ -91,6 +96,8 @@ public class MainWindow extends JPanel implements ActionListener {
                 isOccupied = true;
                 return;
             }
+            isOccupied = false;
+
         }
         for (Car c : Constants.WestCars) {
             if (c.getX() > Constants.topLeftIntersectionX && c.getX() < Constants.botRightIntersectionX
@@ -98,6 +105,8 @@ public class MainWindow extends JPanel implements ActionListener {
                 isOccupied = true;
                 return;
             }
+            isOccupied = false;
+
         }
     }
 
@@ -195,7 +204,7 @@ public class MainWindow extends JPanel implements ActionListener {
     public boolean isFirstCarUnfinished(Car c, ArrayList<Car> cars) {
         Car firstCar = cars.get(0);
         for (int i = 0; i < cars.size(); i++) {
-            if (!cars.get(i).isFinished()) {
+            if (!cars.get(i).isStarted()) {
                 firstCar = cars.get(i);
                 break;
             }
@@ -206,40 +215,60 @@ public class MainWindow extends JPanel implements ActionListener {
     public void updateCars() {
         cleanCars();
         updateOccupied();
+        // System.out.println(isOccupied);
         if (!isOccupied) {
+
             for (int i = 0; i < Constants.NorthCars.size(); i++) {
 
-                if (!Constants.NorthCars.get(i).isFinished()) {
+                if (!Constants.NorthCars.get(i).isStarted()) {
+
                     if (Constants.NorthCars.get(i).isMoving()) {
 
                         if (isFirstCarUnfinished(Constants.NorthCars.get(i), Constants.NorthCars)) {
+                            // System.out.println(Constants.NorthCars.get(i).getY());
+                            // System.out.println(Constants.topLeftIntersectionY
+                            // - Constants.NorthCars.get(i).imageHeight());
                             if (Constants.NorthCars.get(i).getY() >= (Constants.topLeftIntersectionY
-                                    - Constants.NorthCars.get(i).imageHeight())) {
+                                    - Constants.NorthCars.get(i).imageHeight())
+                                    && Constants.NorthCars.get(i).getStopTime() < 101) {
                                 Constants.NorthCars.get(i).stopMoving();
                                 Constants.NorthCars.get(i).updateStopTime();
+                                System.out.println(i);
+                                System.out.println("first car stop moving");
 
                             }
-                        } else {
+                        } else if (i != 0
+                                && Constants.NorthCars.get(i - 1).getY() - Constants.NorthCars.get(i).getY() < 10
+                                        + Constants.NorthCars.get(i).imageHeight()
+                                && !Constants.NorthCars.get(i).isFinished()) {
                             if (Constants.NorthCars.get(i - 1).getY() - Constants.NorthCars.get(i).getY() < 10
-                                    + Constants.NorthCars.get(i).imageHeight()) {
+                                    + Constants.NorthCars.get(i).imageHeight()
+                                    && !Constants.NorthCars.get(i).isFinished()) {
                                 Constants.NorthCars.get(i).stopMoving();
+                                System.out.println("second car stop moving");
 
                             }
                         }
                     } else {
+
                         if (isFirstCarUnfinished(Constants.NorthCars.get(i), Constants.NorthCars)) {
-                            System.out.println(Constants.NorthCars.get(i).getStopTime());
+                            // System.out.println(Constants.NorthCars.get(i).getStopTime());
                             if (Constants.NorthCars.get(i).getStopTime() < 100) {
                                 Constants.NorthCars.get(i).updateStopTime();
+
                             } else {
-                                System.out.println("workig also");
                                 Constants.NorthCars.get(i).doAction();
                                 Constants.NorthCars.get(i).startMoving();
+                                System.out.println("starting to move first car");
+                                Constants.NorthCars.get(i).startAction();
+                                System.out.println(Constants.NorthCars.get(i).isStarted());
+
                             }
                         } else {
-                            if (Constants.NorthCars.get(i - 1).getY() - Constants.NorthCars.get(i).getY() > 10
+                            if (i != 0 && Constants.NorthCars.get(i - 1).getY() - Constants.NorthCars.get(i).getY() > 10
                                     + Constants.NorthCars.get(i).imageHeight()) {
                                 Constants.NorthCars.get(i).startMoving();
+                                System.out.println("starting to move second car");
 
                             }
                         }
@@ -247,7 +276,70 @@ public class MainWindow extends JPanel implements ActionListener {
                 }
 
             }
+        } else {
+            int rightOfWayDirection = rightOfWay();
+
+            for (int i = 0; i < Constants.NorthCars.size(); i++) {
+
+                if (!Constants.NorthCars.get(i).isStarted()) {
+
+                    if (Constants.NorthCars.get(i).isMoving()) {
+
+                        if (isFirstCarUnfinished(Constants.NorthCars.get(i), Constants.NorthCars)) {
+                            // System.out.println(Constants.NorthCars.get(i).getY());
+                            // System.out.println(Constants.topLeftIntersectionY
+                            // - Constants.NorthCars.get(i).imageHeight());
+                            if (Constants.NorthCars.get(i).getY() >= (Constants.topLeftIntersectionY
+                                    - Constants.NorthCars.get(i).imageHeight())) {
+                                Constants.NorthCars.get(i).stopMoving();
+                                Constants.NorthCars.get(i).updateStopTime();
+                                System.out.println(i);
+                                System.out.println("first car stop moving");
+
+                            }
+                        } else if (i != 0
+                                && Constants.NorthCars.get(i - 1).getY() - Constants.NorthCars.get(i).getY() < 10
+                                        + Constants.NorthCars.get(i).imageHeight()
+                                && !Constants.NorthCars.get(i).isFinished()) {
+                            if (Constants.NorthCars.get(i - 1).getY() - Constants.NorthCars.get(i).getY() < 10
+                                    + Constants.NorthCars.get(i).imageHeight()
+                                    && !Constants.NorthCars.get(i).isFinished()) {
+                                Constants.NorthCars.get(i).stopMoving();
+                                System.out.println("second car stop moving");
+
+                            }
+                        }
+                    } else {
+
+                        if (isFirstCarUnfinished(Constants.NorthCars.get(i), Constants.NorthCars)) {
+                            // System.out.println(Constants.NorthCars.get(i).getStopTime());
+                            if (rightOfWayDirection != Constants.NorthCars.get(i).getDirection()) {
+                                Constants.NorthCars.get(i).updateStopTime();
+
+                                // } else {
+                                // Constants.NorthCars.get(i).doAction();
+                                // Constants.NorthCars.get(i).startMoving();
+                                // System.out.println("starting to move first car");
+                                // Constants.NorthCars.get(i).startAction();
+                                // System.out.println(Constants.NorthCars.get(i).isStarted());
+
+                            }
+                        } else {
+                            if (i != 0 && Constants.NorthCars.get(i - 1).getY() -
+                                    Constants.NorthCars.get(i).getY() > 10
+                                            + Constants.NorthCars.get(i).imageHeight()) {
+                                Constants.NorthCars.get(i).startMoving();
+                                System.out.println("starting to move second car");
+
+                            }
+                        }
+                    }
+                }
+
+            }
+
         }
+
         moveCars();
 
     }
@@ -255,7 +347,7 @@ public class MainWindow extends JPanel implements ActionListener {
     public void moveCars() {
         for (Car c : Constants.NorthCars) {
             if (c.isMoving())
-                c.translateAdd(0, 1);
+                c.translateAdd(0, 2);
         }
         for (Car c : Constants.EastCars) {
             if (c.isMoving())

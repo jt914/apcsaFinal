@@ -27,8 +27,8 @@ public class Car extends JPanel {
 
     // buffered image is basically an image that has stored data
     private BufferedImage master, rotated;
-    private int direction, x, y;
-    private boolean moving;
+    private int direction, x, y, actionCase, actionStep;
+    private boolean moving, startedAction;
     private int stopTime;
     private boolean finishedAction;
     public static int currentId;
@@ -41,6 +41,7 @@ public class Car extends JPanel {
         rotated = master;
         id = currentId;
         currentId++;
+        startedAction = false;
 
         // adds current car to list of cars
 
@@ -48,9 +49,9 @@ public class Car extends JPanel {
         // direction = dOfTravel;
         int dOfTravel = 1;
         direction = 1;
-        System.out.println(direction);
+        // System.out.println(direction);
         moving = true;
-
+        actionCase = 0;
         switch (dOfTravel) {
             case (1): {
                 Constants.NorthCars.add(this);
@@ -58,6 +59,7 @@ public class Car extends JPanel {
                 y = Constants.carStartYNorth;
                 try {
                     master = ImageIO.read(new File("resources\\car1Rotated180.png"));
+                    rotated = master;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -71,6 +73,7 @@ public class Car extends JPanel {
                 y = Constants.carStartYEast;
                 try {
                     master = ImageIO.read(new File("resources\\car1Rotated270.png"));
+                    rotated = master;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -83,6 +86,7 @@ public class Car extends JPanel {
                 y = Constants.carStartYSouth;
                 try {
                     master = ImageIO.read(new File("resources\\car1.png"));
+                    rotated = master;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -95,6 +99,7 @@ public class Car extends JPanel {
                 y = Constants.carStartYWest;
                 try {
                     master = ImageIO.read(new File("resources\\car1Rotated90.png"));
+                    rotated = master;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -103,6 +108,14 @@ public class Car extends JPanel {
             }
         }
 
+    }
+
+    public void startAction() {
+        startedAction = true;
+    }
+
+    public boolean isStarted() {
+        return startedAction;
     }
 
     public int imageWidth() {
@@ -227,25 +240,25 @@ public class Car extends JPanel {
         // youre doing complex stuf
         switch (direction) {
             case (1): {
-                g2d.drawImage(master, x, y, (int) (Constants.SW * 0.0808605341246291),
+                g2d.drawImage(rotated, x, y, (int) (Constants.SW * 0.0808605341246291),
                         (int) (Constants.SH * 0.1893939393939394), null);
                 break;
             }
             case (2): {
 
-                g2d.drawImage(master, x, y, (int) (Constants.SH * 0.1893939393939394),
+                g2d.drawImage(rotated, x, y, (int) (Constants.SH * 0.1893939393939394),
                         (int) (Constants.SW * 0.0808605341246291), null);
                 break;
 
             }
             case (3): {
-                g2d.drawImage(master, x, y, (int) (Constants.SW * 0.0808605341246291),
+                g2d.drawImage(rotated, x, y, (int) (Constants.SW * 0.0808605341246291),
                         (int) (Constants.SH * 0.1893939393939394), null);
                 break;
 
             }
             case (4): {
-                g2d.drawImage(master, x, y, (int) (Constants.SH * 0.1893939393939394),
+                g2d.drawImage(rotated, x, y, (int) (Constants.SH * 0.1893939393939394),
                         (int) (Constants.SW * 0.0808605341246291), null);
                 break;
 
@@ -294,13 +307,64 @@ public class Car extends JPanel {
     }
 
     public void doAction() {
-        /**
-         * 
-         * action case int. Switch for which case, either turning left right or straight
-         * In method called do action
-         * Passes in stage of action (what y variable they are at and then apply the
-         * corresponding transformation)
-         */
+
+        // actionStarted = true;
+
+        // 1 is go straight
+        // 2 is turn right
+        // 3 is turn left
+        switch (actionCase) {
+            case 1: {
+                switch (direction) {
+                    case (1): {
+                        ++y;
+                        break;
+                    }
+                    case (2): {
+                        --x;
+                        break;
+
+                    }
+                    case (3): {
+                        --y;
+                        break;
+                    }
+                    case (4): {
+                        ++x;
+                        break;
+                    }
+                }
+                if (actionStep >= 10) {
+                    finishedAction = true;
+                    System.out.println("finished");
+                }
+                break;
+            }
+            case 2: {
+                switch (direction) {
+                    case (1): {
+                        ++y;
+                        break;
+                    }
+                    case (2): {
+                        --x;
+                        break;
+
+                    }
+                    case (3): {
+                        --y;
+                        break;
+                    }
+                    case (4): {
+                        ++x;
+                        break;
+                    }
+                }
+
+            }
+
+        }
+        actionStep++;
     }
 
 }

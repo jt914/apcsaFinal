@@ -16,6 +16,7 @@ import java.io.File;
 import java.awt.image.BufferedImage;
 
 import java.io.IOException;
+import java.net.NoRouteToHostException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -55,23 +56,8 @@ public class MainWindow extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
 
-        // moves each car up 1
-        // cars.get(i).translateAdd(0, -3);
-
-        // if((((double)cars.get(i).getY())/Constants.SH < 0.55 && (rotate <= 90))){
-        // rotateCar(cars.get(i));
-        // repaint();
-
         // }
-        updateCars(Constants.NorthCars);
-        updateCars(Constants.EastCars);
-        updateCars(Constants.SouthCars);
-        updateCars(Constants.WestCars);
-        updateCarsDone(Constants.NorthCarsDone);
-        updateCarsDone(Constants.EastCarsDone);
-        updateCarsDone(Constants.SouthCarsDone);
-        updateCarsDone(Constants.WestCarsDone);
-
+        updateCars();
         // pretty sure this just calls the paint component thingy
         repaint();
 
@@ -84,244 +70,314 @@ public class MainWindow extends JPanel implements ActionListener {
     // testing
     // 4 = West
 
-    public void updateCarsDone(ArrayList<Car> cars) {
-        for (int i = 0; i < cars.size(); i++) {
-
-            switch (cars.get(i).getDirection()) {
-                case (1): {
-                    cars.get(i).translateAdd(0, 1);
-
-                    break;
-                }
-                case (2): {
-                    cars.get(i).translateAdd(-1, 0);
-
-                    break;
-
-                }
-                case (3): {
-                    cars.get(i).translateAdd(0, -1);
-
-                    break;
-                }
-
-                case (4): {
-                    cars.get(i).translateAdd(1, 0);
-                    break;
-                }
-
-            }
-
-        }
-
-    }
-
     public void updateOccupied() {
-        boolean retVal = false;
         for (Car c : Constants.NorthCars) {
             if (c.getX() > Constants.topLeftIntersectionX && c.getX() < Constants.botRightIntersectionX
-                    && c.getY() > Constants.topLeftIntersectionY && c.getY() < Constants.botRightIntersectionY) {
+                    && c.getY() > Constants.topLeftIntersectionY - c.imageHeight() + 2
+                    && c.getY() < Constants.botRightIntersectionY - c.imageHeight() + 2) {
+                isOccupied = true;
+                return;
+            }
+            isOccupied = false;
 
+        }
+        for (Car c : Constants.EastCars) {
+            if (c.getX() > Constants.topLeftIntersectionX && c.getX() < Constants.botRightIntersectionX
+                    && c.getY() > Constants.topLeftIntersectionY && c.getY() < Constants.botRightIntersectionY) {
+                isOccupied = true;
+                return;
+            }
+            isOccupied = false;
+
+        }
+        for (Car c : Constants.SouthCars) {
+            if (c.getX() > Constants.topLeftIntersectionX && c.getX() < Constants.botRightIntersectionX
+                    && c.getY() > Constants.topLeftIntersectionY && c.getY() < Constants.botRightIntersectionY) {
+                isOccupied = true;
+                return;
+            }
+            isOccupied = false;
+
+        }
+        for (Car c : Constants.WestCars) {
+            if (c.getX() > Constants.topLeftIntersectionX && c.getX() < Constants.botRightIntersectionX
+                    && c.getY() > Constants.topLeftIntersectionY && c.getY() < Constants.botRightIntersectionY) {
+                isOccupied = true;
+                return;
+            }
+            isOccupied = false;
+
+        }
+    }
+
+    public void cleanCars() {
+        for (int i = 0; i < Constants.NorthCars.size(); i++) {
+            if (Constants.NorthCars.get(i).getY() >= Constants.SH) {
+                Constants.NorthCars.remove(i);
+            }
+        }
+        for (int i = 0; i < Constants.EastCars.size(); i++) {
+            if (Constants.EastCars.get(i).getY() <= 0) {
+                Constants.EastCars.remove(i);
+            }
+        }
+        for (int i = 0; i < Constants.SouthCars.size(); i++) {
+            if (Constants.SouthCars.get(i).getY() <= 0) {
+                Constants.SouthCars.remove(i);
+            }
+        }
+        for (int i = 0; i < Constants.WestCars.size(); i++) {
+            if (Constants.WestCars.get(i).getX() >= Constants.SW) {
+                Constants.WestCars.remove(i);
             }
         }
     }
 
-    public void updateCars(ArrayList<Car> cars) {
+    public void updateTimer() {
+        for (int i = 0; i < Constants.NorthCars.size(); i++) {
+            if (!Constants.NorthCars.get(i).isMoving() && !Constants.NorthCars.get(i).isFinished()) {
+                Constants.NorthCars.get(i).updateStopTime();
+                break;
+            }
+        }
+        for (int i = 0; i < Constants.EastCars.size(); i++) {
+            if (!Constants.EastCars.get(i).isMoving() && !Constants.EastCars.get(i).isFinished()) {
+                Constants.EastCars.get(i).updateStopTime();
+                break;
+            }
+        }
+        for (int i = 0; i < Constants.SouthCars.size(); i++) {
+            if (!Constants.SouthCars.get(i).isMoving() && !Constants.SouthCars.get(i).isFinished()) {
+                Constants.SouthCars.get(i).updateStopTime();
+                break;
+            }
+        }
+        for (int i = 0; i < Constants.WestCars.size(); i++) {
+            if (!Constants.WestCars.get(i).isMoving() && !Constants.WestCars.get(i).isFinished()) {
+                Constants.WestCars.get(i).updateStopTime();
+                break;
+            }
+        }
+    }
+
+    public int rightOfWay() {
+        int northTime = 0;
+        int eastTime = 0;
+        int southTime = 0;
+        int westTime = 0;
+        for (int i = 0; i < Constants.NorthCars.size(); i++) {
+            if (!Constants.NorthCars.get(i).isMoving() && !Constants.NorthCars.get(i).isFinished()) {
+                northTime = Constants.NorthCars.get(i).getStopTime();
+                break;
+            }
+        }
+        for (int i = 0; i < Constants.EastCars.size(); i++) {
+            if (!Constants.EastCars.get(i).isMoving() && !Constants.EastCars.get(i).isFinished()) {
+                eastTime = Constants.EastCars.get(i).getStopTime();
+                break;
+            }
+        }
+        for (int i = 0; i < Constants.SouthCars.size(); i++) {
+            if (!Constants.SouthCars.get(i).isMoving() && !Constants.SouthCars.get(i).isFinished()) {
+                southTime = Constants.SouthCars.get(i).getStopTime();
+                break;
+            }
+        }
+        for (int i = 0; i < Constants.WestCars.size(); i++) {
+            if (!Constants.WestCars.get(i).isMoving() && !Constants.WestCars.get(i).isFinished()) {
+                westTime = Constants.WestCars.get(i).getStopTime();
+                break;
+            }
+        }
+        if (northTime > eastTime && northTime > southTime && northTime > westTime) {
+            return 1;
+        } else if (eastTime > northTime && eastTime > southTime && eastTime > westTime) {
+            return 2;
+        } else if (southTime > northTime && southTime > eastTime && southTime > westTime) {
+            return 2;
+        } else {
+            return 4;
+        }
 
     }
 
-    // public void updateCars(ArrayList<Car> cars) {
-    // if (cars.size() != 0) {
-    // Car frontCar = cars.get(0);
-    // System.out.println(frontCar.getY());
-    // System.out.println(Constants.SH * 0.15);
+    public boolean isFirstCarNotStarted(Car c, ArrayList<Car> cars) {
+        Car firstCar = cars.get(0);
+        for (int i = 0; i < cars.size(); i++) {
+            if (!cars.get(i).isStarted()) {
+                firstCar = cars.get(i);
+                break;
+            }
+        }
+        return c.getId() == firstCar.getId();
+    }
 
-    // switch (frontCar.getDirection()) {
-    // case (1): {
-    // if (frontCar.getY() > (Constants.SH * 0.4)) {
-    // System.out.println("working");
+    public void updateCars() {
+        cleanCars();
+        updateOccupied();
+        // System.out.println(isOccupied);
 
-    // if (!executedNorth) {
-    // executedNorth = true;
-    // tempTimeNorth = System.currentTimeMillis();
-    // System.out.println(tempTimeNorth + "north");
+        for (int i = 0; i < Constants.NorthCars.size(); i++) {
 
-    // }
-    // // if(System.currentTimeMillis() > )
+            if (!Constants.NorthCars.get(i).isStarted()) {
+                if (!isOccupied) {
 
-    // // check if all other first cars are in a stop sign or the elapsed time is
-    // // enough and then continue
+                    if (Constants.NorthCars.get(i).isMoving()) {
 
-    // cars.get(0).stopMoving();
-    // // if the current time exceeds however long ago the start time was ago, reset
-    // // the current time and continue
-    // // continue stops the current car and moves it up to the done grid then set
-    // // moving to true
+                        if (isFirstCarNotStarted(Constants.NorthCars.get(i), Constants.NorthCars)) {
+                            // System.out.println(Constants.NorthCars.get(i).getY());
+                            // System.out.println(Constants.topLeftIntersectionY
+                            // - Constants.NorthCars.get(i).imageHeight());
+                            if (Constants.NorthCars.get(i).getY() >= (Constants.topLeftIntersectionY
+                                    - Constants.NorthCars.get(i).imageHeight())
+                                    && Constants.NorthCars.get(i).getStopTime() < 101) {
+                                Constants.NorthCars.get(i).stopMoving();
+                                Constants.NorthCars.get(i).updateStopTime();
+                                // System.out.println(i);
+                                // System.out.println("first car stop moving");
 
-    // // check if the distance to the ahead car is (placeholder) distance, and if
-    // it
-    // // less then stop moving. If it is greater, set moving to true
-    // }
-    // break;
-    // }
-    // case (2): {
-    // if (frontCar.getX() < Constants.SW * 0.7) {
-    // if (!executedEast) {
-    // executedEast = true;
-    // tempTimeEast = System.currentTimeMillis();
-    // System.out.println(tempTimeWest + "east");
+                            }
+                        } else if (i != 0
+                                && Constants.NorthCars.get(i - 1).getY() - Constants.NorthCars.get(i).getY() < 10
+                                        + Constants.NorthCars.get(i).imageHeight()
+                                && !Constants.NorthCars.get(i).isFinished()) {
+                            // if (Constants.NorthCars.get(i - 1).getY() - Constants.NorthCars.get(i).getY()
+                            // < 10
+                            // + Constants.NorthCars.get(i).imageHeight()
+                            // && !Constants.NorthCars.get(i).isFinished()) {
+                            Constants.NorthCars.get(i).stopMoving();
+                            // System.out.println("second car stop moving");
 
-    // }
-    // // if(System.currentTimeMillis() > )
+                            // }
+                        }
+                    } else {
 
-    // // check if all other first cars are in a stop sign or the elapsed time is
-    // // enough and then continue
+                        if (isFirstCarNotStarted(Constants.NorthCars.get(i), Constants.NorthCars)) {
+                            // System.out.println(Constants.NorthCars.get(i).getStopTime());
+                            if (Constants.NorthCars.get(i).getStopTime() < 100) {
+                                Constants.NorthCars.get(i).updateStopTime();
 
-    // cars.get(0).stopMoving();
-    // // if the current time exceeds however long ago the start time was ago, reset
-    // // the current time and continue
-    // // continue stops the current car and moves it up to the done grid then set
-    // // moving to true
+                            } else {
+                                Constants.NorthCars.get(i).doAction();
+                                Constants.NorthCars.get(i).startMoving();
+                                // System.out.println("starting to move first car");
+                                Constants.NorthCars.get(i).startAction();
+                                System.out.println(Constants.NorthCars.get(i).isStarted());
 
-    // // check if the distance to the ahead car is (placeholder) distance, and if
-    // it
-    // // less then stop moving. If it is greater, set moving to true
-    // }
-    // break;
-    // }
+                            }
+                        } else {
+                            if (i != 0 && Constants.NorthCars.get(i - 1).getY() - Constants.NorthCars.get(i).getY() > 10
+                                    + Constants.NorthCars.get(i).imageHeight()) {
+                                Constants.NorthCars.get(i).startMoving();
+                                // System.out.println("starting to move second car");
 
-    // case (3): {
-    // if (frontCar.getY() < Constants.SH * 0.7) {
-    // if (!executedSouth) {
-    // executedSouth = true;
-    // tempTimeSouth = System.currentTimeMillis();
-    // System.out.println(tempTimeWest + "south");
+                            }
+                        }
+                    }
+                } else
 
-    // }
-    // // if(System.currentTimeMillis() > )
+                {
+                    int rightOfWayDirection = rightOfWay();
 
-    // // check if all other first cars are in a stop sign or the elapsed time is
-    // // enough and then continue
+                    if (!Constants.NorthCars.get(i).isStarted()) {
 
-    // cars.get(0).stopMoving();
-    // // if the current time exceeds however long ago the start time was ago, reset
-    // // the current time and continue
-    // // continue stops the current car and moves it up to the done grid then set
-    // // moving to true
+                        if (Constants.NorthCars.get(i).isMoving()) {
 
-    // // check if the distance to the ahead car is (placeholder) distance, and if
-    // it
-    // // less then stop moving. If it is greater, set moving to true
-    // }
-    // break;
-    // }
+                            if (isFirstCarNotStarted(Constants.NorthCars.get(i), Constants.NorthCars)) {
 
-    // case (4): {
-    // if (frontCar.getX() > Constants.SW * 0.35) {
-    // if (!executedWest) {
-    // executedWest = true;
-    // tempTimeWest = System.currentTimeMillis();
-    // System.out.println(tempTimeWest + "west");
+                                // if its the first car not started, then keep moving until it reaches the
+                                // intersection
+                                // if its not the first car not started, then keep moving until it reaches the
+                                // car behind the intersection
 
-    // }
-    // // if(System.currentTimeMillis() > )
+                                // System.out.println(Constants.NorthCars.get(i).getY());
+                                // System.out.println(Constants.topLeftIntersectionY
+                                // - Constants.NorthCars.get(i).imageHeight());
+                                if (Constants.NorthCars.get(i).getY() >= (Constants.topLeftIntersectionY
+                                        - Constants.NorthCars.get(i).imageHeight())) {
+                                    Constants.NorthCars.get(i).stopMoving();
+                                    Constants.NorthCars.get(i).updateStopTime();
+                                    // System.out.println(i);
+                                    // System.out.println("first car stop moving");
 
-    // // check if all other first cars are in a stop sign or the elapsed time is
-    // // enough and then continue
+                                }
+                            } else if (i != 0
+                                    && Constants.NorthCars.get(i - 1).getY() - Constants.NorthCars.get(i).getY() < 10
+                                            + Constants.NorthCars.get(i).imageHeight()
+                                    && !Constants.NorthCars.get(i).isFinished()) {
+                                // if (Constants.NorthCars.get(i - 1).getY() - Constants.NorthCars.get(i).getY()
+                                // < 10
+                                // + Constants.NorthCars.get(i).imageHeight()
+                                // && !Constants.NorthCars.get(i).isFinished()) {
+                                Constants.NorthCars.get(i).stopMoving();
+                                // System.out.println("second car stop moving");
 
-    // cars.get(0).stopMoving();
-    // // if the current time exceeds however long ago the start time was ago, reset
-    // // the current time and continue
-    // // continue stops the current car and moves it up to the done grid then set
-    // // moving to true
+                            }
+                            // }
+                        } else {
 
-    // // check if the distance to the ahead car is (placeholder) distance, and if
-    // it
-    // // less then stop moving. If it is greater, set moving to true
-    // }
+                            if (isFirstCarNotStarted(Constants.NorthCars.get(i), Constants.NorthCars)) {
+                                if (Constants.NorthCars.get(i).getY() < (Constants.topLeftIntersectionY
+                                        - Constants.NorthCars.get(i).imageHeight())) {
+                                    Constants.NorthCars.get(i).startMoving();
+                                }
+                                // System.out.println(Constants.NorthCars.get(i).getStopTime());
+                                if (rightOfWayDirection != Constants.NorthCars.get(i).getDirection()
+                                        && (Constants.NorthCars.get(i).getY() >= (Constants.topLeftIntersectionY
+                                                - Constants.NorthCars.get(i).imageHeight()))) {
+                                    Constants.NorthCars.get(i).updateStopTime();
 
-    // break;
-    // }
+                                    // } else {
+                                    // Constants.NorthCars.get(i).doAction();
+                                    // Constants.NorthCars.get(i).startMoving();
+                                    // System.out.println("starting to move first car");
+                                    // Constants.NorthCars.get(i).startAction();
+                                    // System.out.println(Constants.NorthCars.get(i).isStarted());
 
-    // }
+                                }
+                            } else {
+                                if (i != 0 && Constants.NorthCars.get(i - 1).getY() -
+                                        Constants.NorthCars.get(i).getY() > 10
+                                                + Constants.NorthCars.get(i).imageHeight()) {
+                                    Constants.NorthCars.get(i).startMoving();
+                                    // System.out.println("starting to move second car");
+                                }
+                            }
+                        }
+                    }
+                }
+            } else if (Constants.NorthCars.get(i).isStarted()) {
+                Constants.NorthCars.get(i).doAction();
+                Constants.NorthCars.get(i).setActionCase(2);
+                // System.out.println("works");
 
-    // for (int i = 0; i < cars.size(); i++) {
+            }
 
-    // switch (cars.get(i).getDirection()) {
-    // case (1): {
-    // if (cars.get(i).isMoving()) {
-    // cars.get(i).translateAdd(0, 1);
+        }
 
-    // // if else if here to determine if they are behind another car
+        moveCars();
 
-    // }
-    // if (System.currentTimeMillis() > (tempTimeNorth + 1000)) {
-    // System.out.println(System.currentTimeMillis() + " north");
+    }
 
-    // Constants.NorthCarsDone.add(cars.get(i));
-    // Constants.NorthCars.remove(cars.get(i));
+    public void moveCars() {
+        for (Car c : Constants.NorthCars) {
+            if (c.isMoving() && !c.isStarted())
+                c.translateAdd(0, 2);
+        }
+        for (Car c : Constants.EastCars) {
+            if (c.isMoving() && !c.isStarted())
+                c.translateAdd(-1, 0);
+        }
+        for (Car c : Constants.SouthCars) {
+            if (c.isMoving() && !c.isStarted())
+                c.translateAdd(0, -1);
+        }
+        for (Car c : Constants.WestCars) {
+            if (c.isMoving() && !c.isStarted())
+                c.translateAdd(1, 0);
+        }
+    }
 
-    // }
-    // break;
-
-    // }
-    // case (2): {
-    // if (cars.get(i).isMoving()) {
-    // cars.get(i).translateAdd(-1, 0);
-    // if (System.currentTimeMillis() > tempTimeEast + 1000) {
-    // System.out.println(System.currentTimeMillis() + " east");
-
-    // Constants.EastCarsDone.add(cars.get(i));
-    // Constants.EastCars.remove(cars.get(i));
-    // }
-    // }
-    // break;
-
-    // }
-    // case (3): {
-    // if (cars.get(i).isMoving()) {
-    // cars.get(i).translateAdd(0, -1);
-    // if (cars.get(i).getY() < Constants.SH * 0.7
-    // && System.currentTimeMillis() > tempTimeSouth + 1000) {
-    // System.out.println(System.currentTimeMillis() + " south");
-
-    // Constants.SouthCarsDone.add(cars.get(i));
-    // Constants.SouthCars.remove(cars.get(i));
-
-    // }
-    // }
-    // break;
-    // }
-    // case (4): {
-    // if (cars.get(i).isMoving()) {
-    // cars.get(i).translateAdd(1, 0);
-    // if (cars.get(i).getX() > Constants.SW * 0.35
-    // && System.currentTimeMillis() > tempTimeWest + 1000) {
-    // System.out.println(System.currentTimeMillis() + " west");
-
-    // Constants.WestCarsDone.add(cars.get(i));
-    // Constants.WestCars.remove(cars.get(i));
-
-    // }
-    // break;
-    // }
-
-    // }
-
-    // }
-
-    // }
-
-    // }
-
-    // }
-
-    // public void rotateCar(Car cars.get(i)) {
-    // cars.get(i).rotateImageByDegrees(rotate);
-    // rotate++;
-
-    // }
-    // remove cars out of boundary/screeen
     public void paintComponent(Graphics g) {
 
         // these next two lines you just need for some reason idrk why
@@ -361,39 +417,6 @@ public class MainWindow extends JPanel implements ActionListener {
         }
 
         for (Car c : Constants.SouthCars) {
-            try {
-                c.draw(g2d);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (Car c : Constants.NorthCarsDone) {
-
-            try {
-                c.draw(g2d);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (Car c : Constants.EastCarsDone) {
-            try {
-                c.draw(g2d);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (Car c : Constants.WestCarsDone) {
-            try {
-                c.draw(g2d);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (Car c : Constants.SouthCarsDone) {
             try {
                 c.draw(g2d);
             } catch (IOException e) {

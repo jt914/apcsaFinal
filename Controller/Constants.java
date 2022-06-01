@@ -20,7 +20,7 @@ public class Constants {
     // starting position for the car, because if you do it by pixels its gonna
     // become weird on different computers
     public static int carStartXNorth = (int) (SW * 0.4018991097922849);
-    public static int carStartYNorth = 50;
+    public static int carStartYNorth = -200;
 
     public static int carStartXEast = SW - 50;
     public static int carStartYEast = (int) (SH * 0.3518991097922849);

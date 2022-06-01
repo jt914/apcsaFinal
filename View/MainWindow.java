@@ -201,7 +201,7 @@ public class MainWindow extends JPanel implements ActionListener {
 
     }
 
-    public boolean isFirstCarUnfinished(Car c, ArrayList<Car> cars) {
+    public boolean isFirstCarNotStarted(Car c, ArrayList<Car> cars) {
         Car firstCar = cars.get(0);
         for (int i = 0; i < cars.size(); i++) {
             if (!cars.get(i).isStarted()) {
@@ -224,7 +224,7 @@ public class MainWindow extends JPanel implements ActionListener {
 
                     if (Constants.NorthCars.get(i).isMoving()) {
 
-                        if (isFirstCarUnfinished(Constants.NorthCars.get(i), Constants.NorthCars)) {
+                        if (isFirstCarNotStarted(Constants.NorthCars.get(i), Constants.NorthCars)) {
                             // System.out.println(Constants.NorthCars.get(i).getY());
                             // System.out.println(Constants.topLeftIntersectionY
                             // - Constants.NorthCars.get(i).imageHeight());
@@ -251,7 +251,7 @@ public class MainWindow extends JPanel implements ActionListener {
                         }
                     } else {
 
-                        if (isFirstCarUnfinished(Constants.NorthCars.get(i), Constants.NorthCars)) {
+                        if (isFirstCarNotStarted(Constants.NorthCars.get(i), Constants.NorthCars)) {
                             // System.out.println(Constants.NorthCars.get(i).getStopTime());
                             if (Constants.NorthCars.get(i).getStopTime() < 100) {
                                 Constants.NorthCars.get(i).updateStopTime();
@@ -285,7 +285,13 @@ public class MainWindow extends JPanel implements ActionListener {
 
                     if (Constants.NorthCars.get(i).isMoving()) {
 
-                        if (isFirstCarUnfinished(Constants.NorthCars.get(i), Constants.NorthCars)) {
+                        if (isFirstCarNotStarted(Constants.NorthCars.get(i), Constants.NorthCars)) {
+
+                            // if its the first car not started, then keep moving until it reaches the
+                            // intersection
+                            // if its not the first car not started, then keep moving until it reaches the
+                            // car behind the intersection
+
                             // System.out.println(Constants.NorthCars.get(i).getY());
                             // System.out.println(Constants.topLeftIntersectionY
                             // - Constants.NorthCars.get(i).imageHeight());
@@ -311,7 +317,7 @@ public class MainWindow extends JPanel implements ActionListener {
                         }
                     } else {
 
-                        if (isFirstCarUnfinished(Constants.NorthCars.get(i), Constants.NorthCars)) {
+                        if (isFirstCarNotStarted(Constants.NorthCars.get(i), Constants.NorthCars)) {
                             // System.out.println(Constants.NorthCars.get(i).getStopTime());
                             if (rightOfWayDirection != Constants.NorthCars.get(i).getDirection()) {
                                 Constants.NorthCars.get(i).updateStopTime();
@@ -330,7 +336,6 @@ public class MainWindow extends JPanel implements ActionListener {
                                             + Constants.NorthCars.get(i).imageHeight()) {
                                 Constants.NorthCars.get(i).startMoving();
                                 System.out.println("starting to move second car");
-
                             }
                         }
                     }

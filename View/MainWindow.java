@@ -218,6 +218,7 @@ public class MainWindow extends JPanel implements ActionListener {
         // System.out.println(isOccupied);
 
         for (int i = 0; i < Constants.NorthCars.size(); i++) {
+            if(!Constants.NorthCars.get(i).isFinished()){
 
             if (!Constants.NorthCars.get(i).isStarted()) {
                 if (!isOccupied) {
@@ -354,6 +355,10 @@ public class MainWindow extends JPanel implements ActionListener {
             }
 
         }
+    }
+    else{
+        //remove from 
+    }
 
         moveCars();
 

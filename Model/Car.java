@@ -230,8 +230,11 @@ public class Car extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         // NEED THIS, USE THIS.X + X FOR ROTATION
-        int x = ((getWidth() - rotated.getWidth()) / 2) + this.x;
-        int y = ((getHeight() - rotated.getHeight()) / 2) + this.y;
+        int x = this.x + ((getWidth() - master.getWidth()) / 2);
+        int y = this.y + ((getHeight() - master.getHeight()) / 2);
+
+        System.out.println(x);
+        System.out.println(y);
 
         // CHANGE WIDTH AND HEIGHT OF CAR PICTURE ACCORDINGLY
         // Figure out how to rotate car
@@ -354,9 +357,9 @@ public class Car extends JPanel {
             case 2: {
                 switch (direction) {
                     case (1): {
-                        master = rotateImageByDegrees(master, actionCase);
+                        rotated = rotateImageByDegrees(master, actionCase);
                         // rotated = master;
-                        --actionCase;
+                        ++actionCase;
                         if (actionStep <= -90) {
                             finishedAction = true;
                             System.out.println("finished");

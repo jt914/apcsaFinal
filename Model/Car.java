@@ -51,7 +51,8 @@ public class Car extends JPanel {
         direction = 1;
         // System.out.println(direction);
         moving = true;
-        actionCase = 0;
+        actionCase = 2;
+        System.out.println(actionCase);
         switch (dOfTravel) {
             case (1): {
                 Constants.NorthCars.add(this);
@@ -229,8 +230,8 @@ public class Car extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         // NEED THIS, USE THIS.X + X FOR ROTATION
-        // int x = (getWidth() - rotated.getWidth()) / 2;
-        // int y = (getHeight() - rotated.getHeight()) / 2;
+        int x = ((getWidth() - rotated.getWidth()) / 2) + this.x;
+        int y = ((getHeight() - rotated.getHeight()) / 2) + this.y;
 
         // CHANGE WIDTH AND HEIGHT OF CAR PICTURE ACCORDINGLY
         // Figure out how to rotate car
@@ -306,22 +307,32 @@ public class Car extends JPanel {
 
     }
 
+    public void setActionCase(int actionCase) {
+        this.actionCase = actionCase;
+    }
+
     public void doAction() {
 
         // actionStarted = true;
+        // System.out.println("working");
 
         // 1 is go straight
         // 2 is turn right
         // 3 is turn left
+        // System.out.println(actionCase);
+        // System.out.println(direction);
+
         switch (actionCase) {
             case 1: {
+
                 switch (direction) {
                     case (1): {
-                        ++y;
+                        // System.out.println("working");
+                        y += 3;
                         break;
                     }
                     case (2): {
-                        --x;
+                        x--;
                         break;
 
                     }
@@ -336,14 +347,21 @@ public class Car extends JPanel {
                 }
                 if (actionStep >= 10) {
                     finishedAction = true;
-                    System.out.println("finished");
+                    // System.out.println("finished");
                 }
                 break;
             }
             case 2: {
                 switch (direction) {
                     case (1): {
-                        ++y;
+                        master = rotateImageByDegrees(master, actionCase);
+                        // rotated = master;
+                        --actionCase;
+                        if (actionStep <= -90) {
+                            finishedAction = true;
+                            System.out.println("finished");
+                        }
+
                         break;
                     }
                     case (2): {

@@ -230,11 +230,11 @@ public class Car extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         // NEED THIS, USE THIS.X + X FOR ROTATION
-        int x = this.x + ((getWidth() - master.getWidth()) / 2);
-        int y = this.y + ((getHeight() - master.getHeight()) / 2);
+        // int x = this.x + ((getWidth() - master.getWidth()) / 2);
+        // int y = this.y + ((getHeight() - master.getHeight()) / 2);
 
-        System.out.println(x);
-        System.out.println(y);
+        // System.out.println(x);
+        // System.out.println(y);
 
         // CHANGE WIDTH AND HEIGHT OF CAR PICTURE ACCORDINGLY
         // Figure out how to rotate car
@@ -273,12 +273,12 @@ public class Car extends JPanel {
 
     // THIS IS IN PROGRESS.
 
-    @Override
-    public Dimension getPreferredSize() {
-        return master == null
-                ? new Dimension(200, 200)
-                : new Dimension(master.getWidth(), master.getHeight());
-    }
+    // @Override
+    // public Dimension getPreferredSize() {
+    // return master == null
+    // ? new Dimension(200, 200)
+    // : new Dimension(master.getWidth(), master.getHeight());
+    // }
 
     public BufferedImage rotateImageByDegrees(BufferedImage img, double angle) {
 
@@ -357,13 +357,15 @@ public class Car extends JPanel {
             case 2: {
                 switch (direction) {
                     case (1): {
-                        rotated = rotateImageByDegrees(master, actionCase);
+                        rotated = rotateImageByDegrees(master, (-actionStep));
                         // rotated = master;
-                        ++actionCase;
-                        if (actionStep <= -90) {
+                        actionStep++;
+                        System.out.println(actionStep);
+                        if (actionStep >= 90) {
                             finishedAction = true;
                             System.out.println("finished");
                         }
+                        y += 2;
 
                         break;
                     }

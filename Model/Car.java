@@ -43,7 +43,7 @@ public class Car extends JPanel {
 
         // direction = 1;
         // int dOfTravel = 1;
-        int dOfTravel = (int) (Math.random() * 3) + 1;
+        int dOfTravel = (int) (Math.random() * 4) + 1;
         direction = dOfTravel;
         // System.out.println(direction);
 
@@ -299,11 +299,11 @@ public class Car extends JPanel {
                         break;
                     }
                     case (4): {
-                        ++x;
+                        x+=2;
                         break;
                     }
                 }
-                if (actionStep >= 100) {
+                if (actionStep >= 20) {
                     finishedAction = true;
 
                 }
@@ -315,10 +315,10 @@ public class Car extends JPanel {
                         if (actionStep <= 100) {
                             y += 2;
                         } else if (actionStep >= 250) {
-                            System.out.println("Finished");
+                            System.out.println("Finished North");
                             finishedAction = true;
                             Constants.NorthCars.remove(this);
-                            Constants.WestCars.add(this);
+                            Constants.EastCars.add(this);
                             changeDirecton(1);
                         } else if (actionStep >= 190) {
                             x -= 2;
@@ -332,15 +332,15 @@ public class Car extends JPanel {
                     case (2): {
                         if (actionStep <= 80) {
                             x -= 2;
-                        } else if (actionStep >= 250) {
-                            System.out.println("Finished");
+                        } else if (actionStep >= 200) {
+                            System.out.println("Finished East");
 
                             finishedAction = true;
                             Constants.EastCars.remove(this);
                             Constants.SouthCars.add(this);
                             changeDirecton(2);
                         } else if (actionStep >= 170) {
-                            y += 2;
+                            y -= 2;
                         } else {
                             rotateImageByDegrees((actionStep - 80));
 
@@ -352,14 +352,15 @@ public class Car extends JPanel {
                     case (3): {
                         if (actionStep <= 85) {
                             y -= 2;
-                        } else if (actionStep >= 255) {
-                            System.out.println("Finished");
+                        } else if (actionStep >= 205) {
+                            System.out.println("Finished South");
 
                             finishedAction = true;
                             Constants.SouthCars.remove(this);
                             Constants.WestCars.add(this);
                             changeDirecton(3);
                         } else if (actionStep >= 175) {
+                            // System.out.println("working");
                             x += 2;
                         } else {
                             rotateImageByDegrees((actionStep - 85));
@@ -370,15 +371,30 @@ public class Car extends JPanel {
                     }
 
                     case (4): {
-                        ++x;
+                        if (actionStep <= 80) {
+                            x += 2;
+                        } else if (actionStep >= 200) {
+                            System.out.println("Finished West");
+
+                            finishedAction = true;
+                            Constants.WestCars.remove(this);
+                            Constants.NorthCars.add(this);
+                            changeDirecton(2);
+                        } else if (actionStep >= 170) {
+                            y += 2;
+                        } else {
+                            rotateImageByDegrees((actionStep - 80));
+
+                        }
+
                         break;
-                    }
                 }
 
             }
 
         }
-        actionStep++;
     }
+    actionStep++;
 
-}
+
+}}

@@ -22,6 +22,8 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.synth.SynthIcon;
+
 import Controller.*;
 import Model.*;
 
@@ -220,24 +222,26 @@ public class MainWindow extends JPanel implements ActionListener {
             if (!Constants.WestCars.get(i).isMoving() && !Constants.WestCars.get(i).isStarted()
                     && Constants.WestCars.get(i).getStopTime() > westTime) {
                 westTime = Constants.WestCars.get(i).getStopTime();
-            }
-            {
                 break;
             }
-        }
-        System.out.println(northTime + " " + eastTime + " " + southTime + " " + westTime);
 
-        if (northTime >= eastTime && northTime >= southTime && northTime >= westTime) {
-            return 1;
-        } else if (eastTime > northTime && eastTime >= southTime && eastTime >= westTime) {
-            return 2;
-        } else if (southTime > northTime && southTime > eastTime && southTime >= westTime) {
-            return 3;
         }
+        // System.out.println(northTime + " " + eastTime + " " + southTime + " " + westTime);
+
+        if (northTime > eastTime && northTime > southTime && northTime > westTime) {
+            return 1;
+        } else if (eastTime > northTime && eastTime > southTime && eastTime > westTime) {
+            return 2;
+        } else if (southTime > northTime && southTime > eastTime && southTime > westTime) {
+            return 3;
+        }else if(westTime > northTime && westTime > southTime && westTime > eastTime){
+            return 4;
+        }
+        return 0;
         // } else {
         // return 4;
         // }
-        return 4;
+        
 
     }
 
@@ -255,8 +259,9 @@ public class MainWindow extends JPanel implements ActionListener {
     public void updateCars() {
         cleanCars();
         updateOccupied();
-        // System.out.print(rightOfWay());
-        // System.out.println(isOccupied);
+        int rightOfWay = rightOfWay();
+        // System.out.print(rightOfWay + " ");
+        // System.out.print( " " + isOccupied);
         if (Constants.NorthCars.size() > 0) {
 
             for (int i = 0; i < Constants.NorthCars.size(); i++) {
@@ -295,14 +300,14 @@ public class MainWindow extends JPanel implements ActionListener {
                                         Constants.NorthCars.get(i).updateStopTime();
 
                                     } else {
-                                        if (rightOfWay() == 1) {
+                                        if (rightOfWay == 1) {
                                             Constants.NorthCars.get(i).startMoving();
 
                                             Constants.NorthCars.get(i).startAction();
 
                                             Constants.NorthCars.get(i).doAction();
 
-                                            System.out.println(Constants.NorthCars.get(i).isStarted());
+                                            // System.out.println(Constants.NorthCars.get(i).isStarted());
 
                                         } else {
                                             Constants.NorthCars.get(i).updateStopTime();
@@ -399,7 +404,7 @@ public class MainWindow extends JPanel implements ActionListener {
                                         && Constants.EastCars.get(i).getX() - Constants.EastCars.get(i - 1).getX() < (10
                                                 + Constants.EastCars.get(i).imageWidth())
                                         && !Constants.EastCars.get(i).isFinished()) {
-                                    System.out.println("stopping");
+                                    // System.out.println("stopping");
 
                                     Constants.EastCars.get(i).stopMoving();
 
@@ -416,7 +421,7 @@ public class MainWindow extends JPanel implements ActionListener {
                                             Constants.EastCars.get(i).updateStopTime();
 
                                         } else {
-                                            if (rightOfWay() == 2) {
+                                            if (rightOfWay == 2) {
                                                 Constants.EastCars.get(i).startMoving();
 
                                                 Constants.EastCars.get(i).startAction();
@@ -435,7 +440,7 @@ public class MainWindow extends JPanel implements ActionListener {
                                                             + Constants.EastCars.get(i).imageWidth())
                                             && !Constants.EastCars.get(i).isFinished()) {
                                         Constants.EastCars.get(i).startMoving();
-                                        System.out.println("starting");
+                                        // System.out.println("starting");
 
                                     }
                                 }
@@ -537,8 +542,9 @@ public class MainWindow extends JPanel implements ActionListener {
                                         Constants.SouthCars.get(i).updateStopTime();
 
                                     } else {
-                                        if (rightOfWay() == 3) {
+                                        if (rightOfWay == 3) {
                                             Constants.SouthCars.get(i).startMoving();
+                                        
 
                                             Constants.SouthCars.get(i).startAction();
 
@@ -556,7 +562,7 @@ public class MainWindow extends JPanel implements ActionListener {
                                                             + Constants.SouthCars.get(i).imageHeight())
                                             && !Constants.SouthCars.get(i).isFinished()) {
                                         Constants.SouthCars.get(i).startMoving();
-                                        System.out.println("starting");
+                                        // System.out.println("starting");
 
                                     }
                                 }
@@ -623,6 +629,131 @@ public class MainWindow extends JPanel implements ActionListener {
             }
 
         }
+        if (Constants.WestCars.size() > 0) {
+            for (int i = 0; i < Constants.WestCars.size(); i++) {
+                // System.out.println(Constants.WestCars.get(i).getActionCase());
+
+                if (!Constants.WestCars.get(i).isFinished()) {
+
+                    if (!Constants.WestCars.get(i).isStarted()) {
+                        if (!isOccupied) {
+
+                            if (Constants.WestCars.get(i).isMoving()) {
+
+                                if (isFirstCarNotStarted(Constants.WestCars.get(i), Constants.WestCars)) {
+
+                                    if (Constants.WestCars.get(i).getX() >= (Constants.topLeftIntersectionX - Constants.WestCars.get(i).imageWidth()) - 4
+                                            && Constants.WestCars.get(i).getStopTime() < 51) {
+
+                                        Constants.WestCars.get(i).stopMoving();
+                                        Constants.WestCars.get(i).updateStopTime();
+
+                                    }
+                                } else if (i != 0
+                                        && Constants.WestCars.get(i-1).getX() - Constants.WestCars.get(i).getX() < (10
+                                                + Constants.WestCars.get(i).imageWidth())
+                                        && !Constants.WestCars.get(i).isFinished()) {
+                                    // System.out.println("stopping");
+
+                                    Constants.WestCars.get(i).stopMoving();
+
+                                }
+                            } else {
+
+                                if (isFirstCarNotStarted(Constants.WestCars.get(i), Constants.WestCars)) {
+
+                                    // System.out.println(i + " wasdwaswasdwasdd");
+
+                                    if (isFirstCarNotStarted(Constants.WestCars.get(i), Constants.WestCars)) {
+
+                                        if (Constants.WestCars.get(i).getStopTime() < 51) {
+                                            Constants.WestCars.get(i).updateStopTime();
+
+                                        } else {
+                                            if (rightOfWay == 4) {
+                                                Constants.WestCars.get(i).startMoving();
+
+                                                Constants.WestCars.get(i).startAction();
+
+                                                Constants.WestCars.get(i).doAction();
+
+                                            } else {
+                                                Constants.WestCars.get(i).updateStopTime();
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if (i != 0
+                                            && Constants.WestCars.get(i-1).getX()
+                                                    - Constants.WestCars.get(i).getX() >= (10
+                                                            + Constants.WestCars.get(i).imageWidth())
+                                            && !Constants.WestCars.get(i).isFinished()) {
+                                        Constants.WestCars.get(i).startMoving();
+                                        // System.out.println("starting");
+
+                                    }
+                                }
+                            }
+                        } else
+
+                        {
+
+                            if (!Constants.WestCars.get(i).isStarted()) {
+
+                                if (Constants.WestCars.get(i).isMoving()) {
+
+                                    if (isFirstCarNotStarted(Constants.WestCars.get(i), Constants.WestCars)) {
+
+                                        if (Constants.WestCars.get(i).getX() >= (Constants.topLeftIntersectionX - Constants.WestCars.get(i).imageWidth())) {
+                                            Constants.WestCars.get(i).stopMoving();
+                                            Constants.WestCars.get(i).updateStopTime();
+
+                                        }
+                                    } else if (i != 0
+                                            && Constants.WestCars.get(i).getX()
+                                                    - Constants.WestCars.get(i - 1).getX() < (10
+                                                            + Constants.WestCars.get(i).imageWidth())
+                                            && !Constants.WestCars.get(i).isFinished()) {
+
+                                        Constants.WestCars.get(i).stopMoving();
+                                        // System.out.println("working");
+
+                                    }
+
+                                } else {
+
+                                    if (isFirstCarNotStarted(Constants.WestCars.get(i), Constants.WestCars)) {
+                                        if (Constants.WestCars.get(i).getX() <= (Constants.topLeftIntersectionX -Constants.WestCars.get(i).imageWidth())) {
+                                            Constants.WestCars.get(i).startMoving();
+                                        } else {
+
+                                            // && (Constants.WestCars.get(i)
+                                            // .getX() <= (Constants.botRightIntersectionX))) {
+                                            Constants.WestCars.get(i).updateStopTime();
+
+                                        }
+                                    } else {
+                                        if (i != 0
+                                                && Constants.WestCars.get(i).getX()
+                                                        - Constants.WestCars.get(i - 1).getX() >= (10
+                                                                - Constants.WestCars.get(i).imageWidth())
+                                                && !Constants.WestCars.get(i).isFinished()) {
+                                            Constants.WestCars.get(i).startMoving();
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else if (Constants.WestCars.get(i).isStarted()) {
+                        Constants.WestCars.get(i).doAction();
+
+                    }
+
+                }
+            }
+        }
+
 
         moveCars();
 

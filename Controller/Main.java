@@ -64,10 +64,11 @@ public class Main {
 
         while (true) {
             long currentTimeMillis = System.currentTimeMillis();
-            if (currentTimeMillis - startTimeInMillis >= 4000) {
+            if (currentTimeMillis - startTimeInMillis >= 2000) {
                 startTimeInMillis = currentTimeMillis;
                 new Car(ImageIO.read(new File(Constants.paths.get(0))));
                 ++counter;
+                System.out.println(counter);
                 if (counter >= 20) {
                     break;
                 }

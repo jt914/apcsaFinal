@@ -22,13 +22,13 @@ public class Constants {
     public static int carStartXNorth = (int) (SW * 0.4018991097922849);
     public static int carStartYNorth = -200;
 
-    public static int carStartXEast = SW - 100;
+    public static int carStartXEast = SW + 100;
     public static int carStartYEast = (int) (SH * 0.3518991097922849);
 
     public static int carStartXSouth = (int) (SW * 0.5318991097922849);
     public static int carStartYSouth = SH + 50;
 
-    public static int carStartXWest = 50;
+    public static int carStartXWest = -200;
     public static int carStartYWest = (int) (SH * 0.5318991097922849);
 
     // 1st list to store cars on the screen, should probably revise for 1 list for
@@ -47,6 +47,9 @@ public class Constants {
 
     public static int botRightIntersectionX = (int) (SW * 0.5964391691394659);
     public static int botRightIntersectionY = (int) (SH * 0.6742424242424242);
+
+    // up car speed
+    public static int carSpeed = 2;
 
     private int NORTH = 1;
     private int EAST = 2;

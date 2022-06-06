@@ -68,7 +68,7 @@ public class Main {
                 startTimeInMillis = currentTimeMillis;
                 new Car(ImageIO.read(new File(Constants.paths.get(0))));
                 ++counter;
-                // System.out.println(counter);
+                // //System.out.println(counter);
                 if (counter >= 20) {
                     break;
                 }

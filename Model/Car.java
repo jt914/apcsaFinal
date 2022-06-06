@@ -21,20 +21,18 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import Controller.*;
 
 public class Car extends JPanel {
 
-    // buffered image is basically an image that has stored data
     private BufferedImage master, rotated;
     private int direction, x, y, actionCase, actionStep;
     private boolean moving, startedAction;
     private int stopTime;
     private boolean finishedAction;
     public static int currentId;
-    private int id;
-
-    // stores the car's location, starts out at the start location
+    private int id, imageWidth, imageHeight;
 
     public Car(Image o) {
         master = (BufferedImage) o;
@@ -43,16 +41,60 @@ public class Car extends JPanel {
         currentId++;
         startedAction = false;
 
-        // adds current car to list of cars
-
-        // int dOfTravel = (int) (Math.random() * 4) + 1;
-        // direction = dOfTravel;
-        int dOfTravel = 1;
-        direction = 1;
+        // direction = 1;
+        // int dOfTravel = 1;
+        int dOfTravel = (int) (Math.random() * 3) + 1;
+        direction = dOfTravel;
         // System.out.println(direction);
+
+        switch (direction) {
+            case (1): {
+                imageHeight = (int) (Constants.SH * 0.1893939393939394);
+                break;
+
+            }
+            case (2): {
+
+                imageHeight = (int) (Constants.SW * 0.0808605341246291);
+                break;
+
+            }
+            case (3): {
+                imageHeight = (int) (Constants.SH * 0.1893939393939394);
+                break;
+
+            }
+            case (4): {
+                imageHeight = (int) (Constants.SW * 0.0808605341246291);
+                break;
+
+            }
+        }
+        switch (direction) {
+            case (1): {
+                imageWidth = (int) (Constants.SW * 0.0808605341246291);
+                break;
+            }
+            case (2): {
+                imageWidth = (int) (Constants.SH * 0.1893939393939394);
+                break;
+
+            }
+            case (3): {
+                imageWidth = (int) (Constants.SW * 0.0808605341246291);
+                break;
+
+            }
+            case (4): {
+                imageWidth = (int) (Constants.SH * 0.1893939393939394);
+                break;
+            }
+        }
+
         moving = true;
-        actionCase = 2;
-        System.out.println(actionCase);
+        actionCase = (int) (Math.random() * 2) + 1;
+        // System.out.println(actionCase);
+
         switch (dOfTravel) {
             case (1): {
                 Constants.NorthCars.add(this);
@@ -120,49 +162,11 @@ public class Car extends JPanel {
     }
 
     public int imageWidth() {
-        switch (direction) {
-            case (1): {
-                return (int) (Constants.SW * 0.0808605341246291);
-            }
-            case (2): {
-                return (int) (Constants.SH * 0.1893939393939394);
-
-            }
-            case (3): {
-                return (int) (Constants.SW * 0.0808605341246291);
-
-            }
-            case (4): {
-                return (int) (Constants.SH * 0.1893939393939394);
-            }
-            default:
-                return 0;
-        }
+        return imageWidth;
     }
 
     public int imageHeight() {
-        switch (direction) {
-            case (1): {
-                return (int) (Constants.SH * 0.1893939393939394);
-
-            }
-            case (2): {
-
-                return (int) (Constants.SW * 0.0808605341246291);
-
-            }
-            case (3): {
-                return (int) (Constants.SH * 0.1893939393939394);
-
-            }
-            case (4): {
-                return (int) (Constants.SW * 0.0808605341246291);
-
-            }
-            default:
-                return 0;
-
-        }
+        return imageHeight;
     }
 
     public int getId() {
@@ -201,7 +205,6 @@ public class Car extends JPanel {
         return direction;
     }
 
-    // simple getter methods
     public int getX() {
         return x;
     }
@@ -210,7 +213,6 @@ public class Car extends JPanel {
         return y;
     }
 
-    // simple setter methods
     public void translateTo(int x, int y) {
         this.x = x;
         this.y = y;
@@ -225,60 +227,13 @@ public class Car extends JPanel {
         this.direction = direction;
     }
 
-    // draw method is called automatically somewhere in the jframe logic stuff
     public void draw(Graphics g) throws IOException {
         Graphics2D g2d = (Graphics2D) g;
 
-        // NEED THIS, USE THIS.X + X FOR ROTATION
-        // int x = this.x + ((getWidth() - master.getWidth()) / 2);
-        // int y = this.y + ((getHeight() - master.getHeight()) / 2);
-
-        // System.out.println(x);
-        // System.out.println(y);
-
-        // CHANGE WIDTH AND HEIGHT OF CAR PICTURE ACCORDINGLY
-        // Figure out how to rotate car
-
-        // draws image, imageio read is basically like reading the image, x y are top
-        // left coords. Observer is some weird stuff, most people just use null unless
-        // youre doing complex stuf
-        switch (direction) {
-            case (1): {
-                g2d.drawImage(rotated, x, y, (int) (Constants.SW * 0.0808605341246291),
-                        (int) (Constants.SH * 0.1893939393939394), null);
-                break;
-            }
-            case (2): {
-
-                g2d.drawImage(rotated, x, y, (int) (Constants.SH * 0.1893939393939394),
-                        (int) (Constants.SW * 0.0808605341246291), null);
-                break;
-
-            }
-            case (3): {
-                g2d.drawImage(rotated, x, y, (int) (Constants.SW * 0.0808605341246291),
-                        (int) (Constants.SH * 0.1893939393939394), null);
-                break;
-
-            }
-            case (4): {
-                g2d.drawImage(rotated, x, y, (int) (Constants.SH * 0.1893939393939394),
-                        (int) (Constants.SW * 0.0808605341246291), null);
-                break;
-
-            }
-        }
+        g2d.drawImage(rotated, x, y, imageWidth,
+                imageHeight, null);
 
     }
-
-    // THIS IS IN PROGRESS.
-
-    // @Override
-    // public Dimension getPreferredSize() {
-    // return master == null
-    // ? new Dimension(200, 200)
-    // : new Dimension(master.getWidth(), master.getHeight());
-    // }
 
     public BufferedImage rotateImageByDegrees(BufferedImage img, double angle) {
 
@@ -288,8 +243,11 @@ public class Car extends JPanel {
         int h = img.getHeight();
         int newWidth = (int) Math.floor(w * cos + h * sin);
         int newHeight = (int) Math.floor(h * cos + w * sin);
+        imageHeight = (int) (newHeight * 1.14);
+        imageWidth = (int) (newWidth * 1.14);
 
-        BufferedImage rotate = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage rotate = new BufferedImage(newWidth, newHeight,
+                BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = rotate.createGraphics();
         AffineTransform at = new AffineTransform();
         at.translate((newWidth - w) / 2, (newHeight - h) / 2);
@@ -314,33 +272,30 @@ public class Car extends JPanel {
         this.actionCase = actionCase;
     }
 
+    public int getActionCase() {
+        return actionCase;
+    }
+
     public void doAction() {
 
-        // actionStarted = true;
-        // System.out.println("working");
-
-        // 1 is go straight
-        // 2 is turn right
-        // 3 is turn left
         // System.out.println(actionCase);
-        // System.out.println(direction);
 
         switch (actionCase) {
             case 1: {
 
                 switch (direction) {
                     case (1): {
-                        // System.out.println("working");
-                        y += 3;
+
+                        y += 2;
                         break;
                     }
                     case (2): {
-                        x--;
+                        x -= 2;
                         break;
 
                     }
                     case (3): {
-                        --y;
+                        y -= 2;
                         break;
                     }
                     case (4): {
@@ -348,36 +303,72 @@ public class Car extends JPanel {
                         break;
                     }
                 }
-                if (actionStep >= 10) {
+                if (actionStep >= 100) {
                     finishedAction = true;
-                    // System.out.println("finished");
+
                 }
                 break;
             }
             case 2: {
                 switch (direction) {
                     case (1): {
-                        rotated = rotateImageByDegrees(master, (-actionStep));
-                        // rotated = master;
-                        actionStep++;
-                        System.out.println(actionStep);
-                        if (actionStep >= 90) {
+                        if (actionStep <= 100) {
+                            y += 2;
+                        } else if (actionStep >= 250) {
+                            System.out.println("Finished");
                             finishedAction = true;
-                            System.out.println("finished");
+                            Constants.NorthCars.remove(this);
+                            Constants.WestCars.add(this);
+                            changeDirecton(1);
+                        } else if (actionStep >= 190) {
+                            x -= 2;
+                        } else {
+                            rotateImageByDegrees((actionStep - 100));
+
                         }
-                        y += 2;
 
                         break;
                     }
                     case (2): {
-                        --x;
+                        if (actionStep <= 80) {
+                            x -= 2;
+                        } else if (actionStep >= 250) {
+                            System.out.println("Finished");
+
+                            finishedAction = true;
+                            Constants.EastCars.remove(this);
+                            Constants.SouthCars.add(this);
+                            changeDirecton(2);
+                        } else if (actionStep >= 170) {
+                            y += 2;
+                        } else {
+                            rotateImageByDegrees((actionStep - 80));
+
+                        }
+
                         break;
 
                     }
                     case (3): {
-                        --y;
+                        if (actionStep <= 85) {
+                            y -= 2;
+                        } else if (actionStep >= 255) {
+                            System.out.println("Finished");
+
+                            finishedAction = true;
+                            Constants.SouthCars.remove(this);
+                            Constants.WestCars.add(this);
+                            changeDirecton(3);
+                        } else if (actionStep >= 175) {
+                            x += 2;
+                        } else {
+                            rotateImageByDegrees((actionStep - 85));
+
+                        }
+
                         break;
                     }
+
                     case (4): {
                         ++x;
                         break;

@@ -22,11 +22,11 @@ public class Constants {
     public static int carStartXNorth = (int) (SW * 0.4018991097922849);
     public static int carStartYNorth = -200;
 
-    public static int carStartXEast = SW - 50;
+    public static int carStartXEast = SW - 100;
     public static int carStartYEast = (int) (SH * 0.3518991097922849);
 
     public static int carStartXSouth = (int) (SW * 0.5318991097922849);
-    public static int carStartYSouth = SH - 50;
+    public static int carStartYSouth = SH + 50;
 
     public static int carStartXWest = 50;
     public static int carStartYWest = (int) (SH * 0.5318991097922849);
@@ -38,12 +38,8 @@ public class Constants {
     public static ArrayList<Car> SouthCars = new ArrayList<Car>();
     public static ArrayList<Car> WestCars = new ArrayList<Car>();
 
-    public static ArrayList<Car> NorthCarsDone = new ArrayList<Car>();
-    public static ArrayList<Car> EastCarsDone = new ArrayList<Car>();
-    public static ArrayList<Car> SouthCarsDone = new ArrayList<Car>();
-    public static ArrayList<Car> WestCarsDone = new ArrayList<Car>();
-
-    // stores all the names of the images to call later to draw onto the screen
+    // stores all the names of the images to call later to paintComponent onto the
+    // screen
     public static List<String> paths = new ArrayList<String>();
 
     public static int topLeftIntersectionX = (int) (SW * 0.3983679525222552);

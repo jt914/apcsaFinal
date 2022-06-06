@@ -92,7 +92,8 @@ public class Car extends JPanel {
         }
 
         moving = true;
-        actionCase = (int) (Math.random() * 2) + 1;
+        // actionCase = (int) (Math.random() * 2) + 1;
+        actionCase = 1;
         // System.out.println(actionCase);
 
         switch (dOfTravel) {
@@ -303,8 +304,9 @@ public class Car extends JPanel {
                         break;
                     }
                 }
-                if (actionStep >= 20) {
+                if (actionStep >= 320) {
                     finishedAction = true;
+                    System.out.print("Finished ");
 
                 }
                 break;

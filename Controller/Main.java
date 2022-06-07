@@ -28,7 +28,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        // basically all the images to draw on the screen
+        // basically all the images to paintComponent on the screen
         Constants.paths.add("resources\\car1.png"); // Size: 840 x 1150
         Constants.paths.add("resources\\car2.png");
         Constants.paths.add("resources\\car3.png");
@@ -64,18 +64,21 @@ public class Main {
 
         while (true) {
             long currentTimeMillis = System.currentTimeMillis();
-            if (currentTimeMillis - startTimeInMillis >= 4000) {
+            if (currentTimeMillis - startTimeInMillis >= 2000) {
                 startTimeInMillis = currentTimeMillis;
                 new Car(ImageIO.read(new File(Constants.paths.get(0))));
                 ++counter;
+                // //System.out.println(counter);
                 if (counter >= 20) {
                     break;
                 }
             }
         }
 
-        // construcotr for new car will create the car and draw it using the paint
-        // method and stuff, the file parameter is just to tell it the image to draw
+        // construcotr for new car will create the car and paintComponent it using the
+        // paint
+        // method and stuff, the file parameter is just to tell it the image to
+        // paintComponent
         // new Car(ImageIO.read(new File(Constants.paths.get(0))));
         // new Car(ImageIO.read(new File(Constants.paths.get(0))));
         // new Car(ImageIO.read(new File(Constants.paths.get(0))));

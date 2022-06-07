@@ -314,6 +314,8 @@ public class MainWindow extends JPanel implements ActionListener {
                                     } else {
                                         if (rightOfWay == 1) {
                                             Constants.NorthCars.get(i).startMoving();
+                                            // System.out.println(" working");
+
 
                                             Constants.NorthCars.get(i).startAction();
 
@@ -384,6 +386,7 @@ public class MainWindow extends JPanel implements ActionListener {
                             }
                         }
                     } else if (Constants.NorthCars.get(i).isStarted()) {
+
                         Constants.NorthCars.get(i).doAction();
 
                     }
@@ -781,12 +784,12 @@ public class MainWindow extends JPanel implements ActionListener {
         for (Car c : Constants.NorthCars) {
             if (c.isFinished()) {
                 c.translateAdd(0, Constants.carSpeed);
-
             }
         }
         for (Car c : Constants.EastCars) {
             if (c.isFinished()) {
                 c.translateAdd(-Constants.carSpeed, 0);
+
             }
         }
         for (Car c : Constants.SouthCars) {
@@ -806,11 +809,13 @@ public class MainWindow extends JPanel implements ActionListener {
             if (c.isMoving() && !c.isStarted()) {
                 c.translateAdd(0, Constants.carSpeed);
 
+
             }
         }
         for (Car c : Constants.EastCars) {
             if (c.isMoving() && !c.isStarted())
                 c.translateAdd(-Constants.carSpeed, 0);
+
         }
         for (Car c : Constants.SouthCars) {
             if (c.isMoving() && !c.isStarted())

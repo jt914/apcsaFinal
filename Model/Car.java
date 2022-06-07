@@ -41,10 +41,10 @@ public class Car extends JPanel {
         currentId++;
         startedAction = false;
 
-        // direction = 1;
-        // int dOfTravel = 1;
-        int dOfTravel = (int) (Math.random() * 4) + 1;
-        direction = dOfTravel;
+        direction = 1;
+        int dOfTravel = 1;
+        // int dOfTravel = (int) (Math.random() * 4) + 1;
+        // direction = dOfTravel;
         // //System.out.println(direction);
 
         switch (direction) {
@@ -92,8 +92,8 @@ public class Car extends JPanel {
         }
 
         moving = true;
-        actionCase = (int) (Math.random() * 2) + 1;
-        // actionCase = 1;
+        // actionCase = (int) (Math.random() * 2) + 1;
+        actionCase = 2;
         // //System.out.println(actionCase);
 
         switch (dOfTravel) {
@@ -288,16 +288,17 @@ public class Car extends JPanel {
                     case (1): {
 
                         y += Constants.carSpeed;
-                        if (actionCase >= (Constants.botRightIntersectionY - Constants.topLeftIntersectionY)
-                                / Constants.carSpeed) {
+                        
+                        if (actionStep >= ((Constants.botRightIntersectionY - Constants.topLeftIntersectionY)
+                                / Constants.carSpeed) + 20) {
                             finishedAction = true;
                         }
                         break;
                     }
                     case (2): {
                         x -= Constants.carSpeed;
-                        if (actionCase <= (Constants.botRightIntersectionX - Constants.topLeftIntersectionX)
-                                / Constants.carSpeed) {
+                        if (actionStep <= ((Constants.botRightIntersectionX - Constants.topLeftIntersectionX)
+                                / Constants.carSpeed) + 20) {
                             finishedAction = true;
                         }
 
@@ -306,8 +307,8 @@ public class Car extends JPanel {
                     }
                     case (3): {
                         y -= Constants.carSpeed;
-                        if (actionCase <= (Constants.botRightIntersectionY - Constants.topLeftIntersectionY)
-                                / Constants.carSpeed) {
+                        if (actionStep <= ((Constants.botRightIntersectionY - Constants.topLeftIntersectionY)
+                                / Constants.carSpeed) + 20) {
                             finishedAction = true;
                         }
 
@@ -315,8 +316,8 @@ public class Car extends JPanel {
                     }
                     default: {
                         x += Constants.carSpeed;
-                        if (actionCase >= (Constants.botRightIntersectionX - Constants.topLeftIntersectionX)
-                                / Constants.carSpeed) {
+                        if (actionStep >= ((Constants.botRightIntersectionX - Constants.topLeftIntersectionX)
+                                / Constants.carSpeed)+ 20){
                             finishedAction = true;
                         }
 
@@ -327,24 +328,60 @@ public class Car extends JPanel {
             }
             case 2: {
                 switch (direction) {
+    
+                    
                     case (1): {
-                        if (actionStep <= 100) {
-                            y += Constants.carSpeed;
-                        } else if (actionStep >= ((Constants.botRightIntersectionY - Constants.topLeftIntersectionY)
-                                / Constants.carSpeed) - 190) {
-                            // //System.out.println("Finished North");
-                            finishedAction = true;
+
+                        if(actionStep <= (((Constants.botRightIntersectionY - Constants.topLeftIntersectionY)
+                        / Constants.carSpeed)/2)){
+                            y+= Constants.carSpeed;
+                            startedAction = true;
+                        }
+                        else{
+                            if(actionStep <= (((Constants.botRightIntersectionY - Constants.topLeftIntersectionY)
+                            / Constants.carSpeed)/2)+ 90){
+                        rotateImageByDegrees((((actionStep - Constants.botRightIntersectionY - Constants.topLeftIntersectionY)
+                        / Constants.carSpeed)/2));
+                            }
+                            else{
+                                if(x <= Constants.topLeftIntersectionX){
+                                    finishedAction = true;
+                                    System.out.println(" working");
+
                             Constants.NorthCars.remove(this);
                             Constants.EastCars.add(this);
-                            changeDirecton(1);
-                        } else if (actionStep >= 190) {
-                            x -= Constants.carSpeed;
-                        } else {
-                            rotateImageByDegrees((actionStep - 100));
+                            changeDirecton(4);
 
+                                }
+                                else{
+                                    System.out.println("wasd");
+                                    x-= Constants.carSpeed;
+                                }
+                            }
                         }
-
                         break;
+                                                        
+
+
+//                         if (actionStep <= 50) {
+//                             y += Constants.carSpeed;
+//                         } 
+//                     } else if{
+//                         rotateImageByDegrees((actionStep - 100));
+
+//                     }
+// else if (actionStep >= ((Constants.botRightIntersectionY - Constants.topLeftIntersectionY)
+//                                 / Constants.carSpeed) - 190) {
+//                             // //System.out.println("Finished North");
+//                             finishedAction = true;
+//                             Constants.NorthCars.remove(this);
+//                             Constants.EastCars.add(this);
+//                             changeDirecton(1);
+//                         } else if (actionStep >= 190) {
+//                             x -= Constants.carSpeed;
+
+//                         break;
+//                     }
                     }
                     case (2): {
                         if (actionStep <= 80) {

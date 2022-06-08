@@ -1,13 +1,23 @@
 package Model;
 
 import java.io.File;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.geom.AffineTransform;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -31,8 +41,11 @@ public class Car extends JPanel {
         currentId++;
         startedAction = false;
 
+        // direction = 1;
+        // int dOfTravel = 1;
         int dOfTravel = (int) (Math.random() * 4) + 1;
         direction = dOfTravel;
+        // System.out.println(direction);
 
         switch (direction) {
             case (1): {
@@ -80,6 +93,8 @@ public class Car extends JPanel {
 
         moving = true;
         actionCase = (int) (Math.random() * 2) + 1;
+        // actionCase = 1;
+        // System.out.println(actionCase);
 
         switch (dOfTravel) {
             case (1): {
@@ -264,6 +279,8 @@ public class Car extends JPanel {
 
     public void doAction() {
 
+        // System.out.println(actionCase);
+
         switch (actionCase) {
             case 1: {
 
@@ -345,7 +362,7 @@ public class Car extends JPanel {
                             Constants.WestCars.add(this);
                             changeDirecton(3);
                         } else if (actionStep >= 175) {
-
+                            // System.out.println("working");
                             x += 2;
                         } else {
                             rotateImageByDegrees((actionStep - 85));

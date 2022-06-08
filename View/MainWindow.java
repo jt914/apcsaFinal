@@ -1,45 +1,21 @@
 package View;
 
 import java.io.File;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.geom.AffineTransform;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.awt.image.BufferedImage;
-
 import java.io.IOException;
-import java.net.NoRouteToHostException;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.plaf.synth.SynthIcon;
 
 import Controller.*;
 import Model.*;
 
 public class MainWindow extends JPanel implements ActionListener {
-
-    private AffineTransform trans;
-    private int rotate = 0;
-    private long tempTimeNorth;
-    private long tempTimeEast;
-    private long tempTimeSouth;
-    private long tempTimeWest;
-
-    private boolean executedNorth = false;
-    private boolean executedEast = false;
-    private boolean executedSouth = false;
-    private boolean executedWest = false;
 
     private int rightOfWay;
 
@@ -61,57 +37,6 @@ public class MainWindow extends JPanel implements ActionListener {
     }
 
     public void updateOccupied() {
-        // for (Car c : Constants.NorthCars) {
-        // if (c.getX() > Constants.topLeftIntersectionX && c.getX() <
-        // Constants.botRightIntersectionY
-        // && c.getY() > Constants.topLeftIntersectionY - c.imageHeight() + 2
-        // && c.getY() < Constants.botRightIntersectionY - c.imageHeight() + 2) {
-
-        // isOccupied = true;
-        // return;
-        // }
-        // isOccupied = false;
-
-        // }
-        // for (int i = 0; i < Constants.EastCars.size(); i++) {
-
-        // if (Constants.EastCars.get(i).getX() > Constants.topLeftIntersectionX
-        // && Constants.EastCars.get(i).getX() < Constants.botRightIntersectionX - 4
-        // && Constants.EastCars.get(i).getY() > Constants.topLeftIntersectionY
-        // && Constants.EastCars.get(i).getY() < Constants.botRightIntersectionY) {
-        // // //System.out.print(Constants.EastCars.size());
-        // isOccupied = true;
-        // return;
-        // }
-        // isOccupied = false;
-
-        // }
-        // for (int i = 0; i < Constants.SouthCars.size(); i++) {
-        // // //System.out.println(c.getY() + " " + Constants.topLeftIntersectionY);
-
-        // if (Constants.SouthCars.get(i).getX() > Constants.topLeftIntersectionX
-        // && Constants.SouthCars.get(i).getX() < Constants.botRightIntersectionX
-        // && Constants.SouthCars.get(i).getY() > Constants.topLeftIntersectionY
-        // && Constants.SouthCars.get(i).getY() < Constants.botRightIntersectionY - 4) {
-        // isOccupied = true;
-        // return;
-        // }
-        // isOccupied = false;
-
-        // for()
-
-        // }
-        // for (Car c : Constants.WestCars) {
-        // if (c.getX() > Constants.topLeftIntersectionX && c.getX() <
-        // Constants.botRightIntersectionX
-        // && c.getY() > Constants.topLeftIntersectionY && c.getY() <
-        // Constants.botRightIntersectionY) {
-        // isOccupied = true;
-        // return;
-        // }
-        // isOccupied = false;
-
-        // }
 
         for (Car c : Constants.NorthCars) {
             if (c.isStarted() && !c.isFinished()) {
@@ -146,22 +71,22 @@ public class MainWindow extends JPanel implements ActionListener {
 
     public void cleanCars() {
         for (int i = 0; i < Constants.NorthCars.size(); i++) {
-            if (Constants.NorthCars.get(i).getY() >= Constants.SH) {
+            if (Constants.NorthCars.get(i).getY() >= Constants.SH && Constants.NorthCars.get(i).isFinished()) {
                 Constants.NorthCars.remove(i);
             }
         }
         for (int i = 0; i < Constants.EastCars.size(); i++) {
-            if (Constants.EastCars.get(i).getX() <= 0) {
+            if (Constants.EastCars.get(i).getX() <= 0 && Constants.EastCars.get(i).isFinished()) {
                 Constants.EastCars.remove(i);
             }
         }
         for (int i = 0; i < Constants.SouthCars.size(); i++) {
-            if (Constants.SouthCars.get(i).getY() <= 0) {
+            if (Constants.SouthCars.get(i).getY() <= 0 && Constants.SouthCars.get(i).isFinished()) {
                 Constants.SouthCars.remove(i);
             }
         }
         for (int i = 0; i < Constants.WestCars.size(); i++) {
-            if (Constants.WestCars.get(i).getX() >= Constants.SW) {
+            if (Constants.WestCars.get(i).getX() >= Constants.SW && Constants.WestCars.get(i).isFinished()) {
                 Constants.WestCars.remove(i);
             }
         }
@@ -228,8 +153,6 @@ public class MainWindow extends JPanel implements ActionListener {
             }
 
         }
-        // //System.out.println(northTime + " " + eastTime + " " + southTime + " " +
-        // westTime);
 
         if (northTime > eastTime && northTime > southTime && northTime > westTime) {
             return 1;
@@ -241,9 +164,6 @@ public class MainWindow extends JPanel implements ActionListener {
             return 4;
         }
         return 0;
-        // } else {
-        // return 4;
-        // }
 
     }
 
@@ -271,13 +191,10 @@ public class MainWindow extends JPanel implements ActionListener {
                 rightOfWay = 0;
             }
         }
-        // int rightOfWay = rightOfWay();
-        // //System.out.print(rightOfWay + " ");
-        // //System.out.print( " " + isOccupied);
+
         if (Constants.NorthCars.size() > 0) {
 
             for (int i = 0; i < Constants.NorthCars.size(); i++) {
-                // //System.out.println(Constants.NorthCars.get(i).getActionCase());
 
                 if (!Constants.NorthCars.get(i).isFinished()) {
 
@@ -320,8 +237,6 @@ public class MainWindow extends JPanel implements ActionListener {
                                             Constants.NorthCars.get(i).startAction();
 
                                             Constants.NorthCars.get(i).doAction();
-
-                                            // //System.out.println(Constants.NorthCars.get(i).isStarted());
 
                                         } else {
                                             Constants.NorthCars.get(i).updateStopTime();
@@ -397,7 +312,6 @@ public class MainWindow extends JPanel implements ActionListener {
 
         if (Constants.EastCars.size() > 0) {
             for (int i = 0; i < Constants.EastCars.size(); i++) {
-                // //System.out.println(Constants.EastCars.get(i).getActionCase());
 
                 if (!Constants.EastCars.get(i).isFinished()) {
 
@@ -419,7 +333,6 @@ public class MainWindow extends JPanel implements ActionListener {
                                         && Constants.EastCars.get(i).getX() - Constants.EastCars.get(i - 1).getX() < (10
                                                 + Constants.EastCars.get(i).imageWidth())
                                         && !Constants.EastCars.get(i).isFinished()) {
-                                    // //System.out.println("stopping");
 
                                     Constants.EastCars.get(i).stopMoving();
 
@@ -427,8 +340,6 @@ public class MainWindow extends JPanel implements ActionListener {
                             } else {
 
                                 if (isFirstCarNotStarted(Constants.EastCars.get(i), Constants.EastCars)) {
-
-                                    // //System.out.println(i + " wasdwaswasdwasdd");
 
                                     if (isFirstCarNotStarted(Constants.EastCars.get(i), Constants.EastCars)) {
 
@@ -455,7 +366,6 @@ public class MainWindow extends JPanel implements ActionListener {
                                                             + Constants.EastCars.get(i).imageWidth())
                                             && !Constants.EastCars.get(i).isFinished()) {
                                         Constants.EastCars.get(i).startMoving();
-                                        // //System.out.println("starting");
 
                                     }
                                 }
@@ -475,7 +385,7 @@ public class MainWindow extends JPanel implements ActionListener {
                                             Constants.EastCars.get(i).updateStopTime();
 
                                         }
-                                        // FIX THIS TOMRROW, LINE 712 too
+
                                     } else if (i != 0
                                             && Constants.EastCars.get(i).getX()
                                                     - Constants.EastCars.get(i - 1).getX() < (10
@@ -483,7 +393,6 @@ public class MainWindow extends JPanel implements ActionListener {
                                             && !Constants.EastCars.get(i).isFinished()) {
 
                                         Constants.EastCars.get(i).stopMoving();
-                                        // System.out.println("working");
 
                                     }
 
@@ -494,8 +403,6 @@ public class MainWindow extends JPanel implements ActionListener {
                                             Constants.EastCars.get(i).startMoving();
                                         } else {
 
-                                            // && (Constants.EastCars.get(i)
-                                            // .getX() <= (Constants.botRightIntersectionX))) {
                                             Constants.EastCars.get(i).updateStopTime();
 
                                         }
@@ -522,7 +429,7 @@ public class MainWindow extends JPanel implements ActionListener {
         }
         if (Constants.SouthCars.size() > 0) {
             for (int i = 0; i < Constants.SouthCars.size(); i++) {
-                // //System.out.println(Constants.SouthCars.get(i).getActionCase());
+
                 if (!Constants.SouthCars.get(i).isFinished()) {
 
                     if (!Constants.SouthCars.get(i).isStarted()) {
@@ -545,7 +452,6 @@ public class MainWindow extends JPanel implements ActionListener {
                                                 - Constants.SouthCars.get(i - 1).getY() < (10
                                                         + Constants.SouthCars.get(i).imageHeight())
                                         && !Constants.SouthCars.get(i).isFinished()) {
-                                    // //System.out.println("stopping");
 
                                     Constants.SouthCars.get(i).stopMoving();
 
@@ -577,7 +483,6 @@ public class MainWindow extends JPanel implements ActionListener {
                                                             + Constants.SouthCars.get(i).imageHeight())
                                             && !Constants.SouthCars.get(i).isFinished()) {
                                         Constants.SouthCars.get(i).startMoving();
-                                        // //System.out.println("starting");
 
                                     }
                                 }
@@ -605,7 +510,6 @@ public class MainWindow extends JPanel implements ActionListener {
                                             && !Constants.SouthCars.get(i).isFinished()) {
 
                                         Constants.SouthCars.get(i).stopMoving();
-                                        // //System.out.println("working");
 
                                     }
 
@@ -617,8 +521,7 @@ public class MainWindow extends JPanel implements ActionListener {
                                         }
 
                                         else {
-                                            // && (Constants.SouthCars.get(i)
-                                            // .getY() <= (Constants.botRightIntersectionY))) {
+
                                             Constants.SouthCars.get(i).updateStopTime();
 
                                         }
@@ -646,7 +549,6 @@ public class MainWindow extends JPanel implements ActionListener {
         }
         if (Constants.WestCars.size() > 0) {
             for (int i = 0; i < Constants.WestCars.size(); i++) {
-                // //System.out.println(Constants.WestCars.get(i).getActionCase());
 
                 if (!Constants.WestCars.get(i).isFinished()) {
 
@@ -670,7 +572,6 @@ public class MainWindow extends JPanel implements ActionListener {
                                         && Constants.WestCars.get(i - 1).getX() - Constants.WestCars.get(i).getX() < (10
                                                 + Constants.WestCars.get(i).imageWidth())
                                         && !Constants.WestCars.get(i).isFinished()) {
-                                    // //System.out.println("stopping");
 
                                     Constants.WestCars.get(i).stopMoving();
 
@@ -679,8 +580,6 @@ public class MainWindow extends JPanel implements ActionListener {
 
                                 if (isFirstCarNotStarted(Constants.WestCars.get(i), Constants.WestCars)) {
 
-                                    // //System.out.println(i + " wasdwaswasdwasdd");
-
                                     if (isFirstCarNotStarted(Constants.WestCars.get(i), Constants.WestCars)) {
 
                                         if (Constants.WestCars.get(i).getStopTime() < 51) {
@@ -688,7 +587,7 @@ public class MainWindow extends JPanel implements ActionListener {
 
                                         } else {
                                             if (rightOfWay == 4) {
-                                                // System.out.println("wasd");
+
                                                 Constants.WestCars.get(i).startMoving();
 
                                                 Constants.WestCars.get(i).startAction();
@@ -707,7 +606,6 @@ public class MainWindow extends JPanel implements ActionListener {
                                                             + Constants.WestCars.get(i).imageWidth())
                                             && !Constants.WestCars.get(i).isFinished()) {
                                         Constants.WestCars.get(i).startMoving();
-                                        // System.out.println("starting");
 
                                     }
                                 }
@@ -735,7 +633,6 @@ public class MainWindow extends JPanel implements ActionListener {
                                             && !Constants.WestCars.get(i).isFinished()) {
 
                                         Constants.WestCars.get(i).stopMoving();
-                                        // //System.out.println("working");
 
                                     }
 
@@ -747,8 +644,6 @@ public class MainWindow extends JPanel implements ActionListener {
                                             Constants.WestCars.get(i).startMoving();
                                         } else {
 
-                                            // && (Constants.WestCars.get(i)
-                                            // .getX() <= (Constants.botRightIntersectionX))) {
                                             Constants.WestCars.get(i).updateStopTime();
 
                                         }

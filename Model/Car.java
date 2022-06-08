@@ -300,11 +300,11 @@ public class Car extends JPanel {
                         break;
                     }
                     case (4): {
-                        x+=2;
+                        x += 2;
                         break;
                     }
                 }
-                if (actionStep >= 320) {
+                if (actionStep >= 260) {
                     finishedAction = true;
                     System.out.print("Finished ");
 
@@ -390,13 +390,13 @@ public class Car extends JPanel {
                         }
 
                         break;
+                    }
+
                 }
 
             }
-
         }
+        actionStep++;
+
     }
-    actionStep++;
-
-
-}}
+}
